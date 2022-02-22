@@ -2,7 +2,8 @@
   "scripts": {
     "start": "node ./dist/server.js",
     "watch": "tsc -w",
-    "heroku-postbuild": "tsc && cd client && npm install && npm run build",
+    "postinstall": "tsc",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "dev": "nodemon ./dist/server.js"
   },
   "name": "server",
