@@ -1,0 +1,9 @@
+.post_comment{
+    display: flex;
+    margin-bottom: 16px;
+}
+
+.perfil_post_caption{
+    margin: 10px;
+    margin-top: 5px;
+}

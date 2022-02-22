@@ -1,0 +1,30 @@
+.header{
+    border-bottom: 1px solid lightgray;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    object-fit: contain;
+}
+
+.header__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 10%;
+}
+
+.headerlogo{
+    padding: 15px 10px 5px 0px;
+    object-fit: contain;
+}
+
+@media (max-width: 450px) {
+    .header__container{
+        margin: 0 2%;
+    }
+}
+
+.header__options{
+    display: flex;
+}

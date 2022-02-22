@@ -1,0 +1,23 @@
+.modal__headerlogo{
+    object-fit: contain;
+    padding: 10px 10px 15px 10px;
+}
+
+.modal__divlogo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid rgb(78 73 85 / 24%);
+    border-radius: 5px;
+}
+
+.modal__article{
+    padding: 0px 10px 10px 10px;
+}
+
+.modal__form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

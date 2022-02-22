@@ -1,0 +1,156 @@
+.perfilInformation{
+    display: flex;
+    padding: 4% 5%;
+    border-bottom: 1px solid rgb(155, 155, 155);
+}
+
+.info{
+    font-size: 30px;
+    margin-left: 10%;
+    width: 100%;
+}
+
+.username_and_btn{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 760px){
+    .username_and_btn{
+        flex-direction: column;
+    }
+
+    .username_and_btn > span{
+        padding-bottom: 10px;
+    }
+
+    .username_and_btn > div, a{
+        margin-left: 0 !important;
+    }
+}
+
+.p_f_f{
+    display: flex;
+    font-size: 16px;
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+.biografy{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.biografy__name{
+    font-size: 17px;
+}
+
+.biografy__description{
+    font-size: 16px;
+    font-weight: 400;
+    color: #262626;
+    line-height: 24px;
+}
+
+.user_webSite{
+    font-weight: 600;
+    line-height: 24px;
+    font-size: 16px;
+    color: #00376b;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.avatar-file-input{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    cursor: pointer;
+    border-radius: 160px;
+}
+
+.mobileTablet_followInfo > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(85, 85, 85);
+}
+
+@media (max-width: 760px) {
+    .followsInfo{
+        display: none;
+    }
+
+    .mobileTablet_followInfo{
+        display: flex !important;
+        justify-content: space-around;
+        padding-bottom: .5rem;
+        border-bottom: 1px solid rgb(155, 155, 155);
+    }
+}
+
+.addImg{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatarContainer{
+    min-width: 130px;
+    width: 25% !important;
+    height: 0 !important;
+    padding-top: max(130px, 25%);
+    position: relative !important;
+    cursor: pointer;
+}
+
+.avatarContainer > img{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    aspect-ratio: 1;
+}
+
+.avatarContainer > svg{
+    position: absolute;
+    width: 86%;
+    top: 3%;
+    left: 8%;
+    aspect-ratio: 1;
+}
+
+.followBtn{
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    font-weight: 600;
+}
+
+.followBtn:active{
+    opacity: .7;
+}
+
+.isFollowingBtn{
+    padding: 6px 30px;
+}
+
+.perfilInfo_loadingUnfollow{
+    padding: 4.5px 27px;
+    border: 1px solid #dbdbdb;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}

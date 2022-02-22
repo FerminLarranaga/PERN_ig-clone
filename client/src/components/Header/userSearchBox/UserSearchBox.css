@@ -1,0 +1,13 @@
+.rw-widget {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 10px;
+}
+
+@media (max-width: 500px){
+    .rw-popup-container{
+        min-width: 250px;
+        right: -25% !important;
+        left: -25% !important;
+    }
+}

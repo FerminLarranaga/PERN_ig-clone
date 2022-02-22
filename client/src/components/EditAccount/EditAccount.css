@@ -1,0 +1,92 @@
+.editAcc_container{
+    width: 50vw;
+    margin: 40px 0;
+    padding: 55px 80px 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    background-color: white;
+}
+
+.editAcc_avatarContainer{
+    display: flex;
+    align-items: center;
+    margin-left: 70px;
+}
+
+.editAcc_avatar{
+    width: 50px !important;
+    height: 50px !important;
+}
+
+.editAcc_changeProfilePic{
+    margin-left: 35px;
+}
+
+.editAcc_changeProfilePic > span{
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.editAcc_changeProfilePic > button{
+    background: none;
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/*FORM*/
+
+.editAcc_form{
+
+}
+
+.editAcc_field{
+    display: flex;
+    margin: 30px;
+    margin-left: 0;
+}
+
+.editAcc_fieldName{
+    flex: 0 0 160px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-top: 6px;
+    padding-right: 32px;
+    text-align: right;
+}
+
+.editAcc_fieldName > label{
+    color: #262626;
+}
+
+.editAcc_inputContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 355px;
+}
+
+.editAcc_input{
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    font-size: 16px;
+    padding: 0 10px;
+    height: 32px;
+}
+
+.editAcc_inputDesc{
+    color: #8e8e8e;
+    font-size: 12px;
+    line-height: 16px;
+    margin: -2px 0 -3px;
+    font-weight: 400;
+}
+
+.editAcc_formSubmit[disabled]{
+    opacity: .3;
+    cursor: default;
+}

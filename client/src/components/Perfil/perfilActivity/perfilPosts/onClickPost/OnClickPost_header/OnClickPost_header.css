@@ -1,0 +1,76 @@
+.post_information_div{
+    display: flex;
+    padding: 16px;
+    padding-right: 0;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    position: sticky;
+    top: 0;
+}
+
+.tabletPostHeader{
+    display: none;
+    width: 90%;
+}
+
+@media (max-width: 930px){
+    .computerPostHeader{
+        display: none;
+    }
+
+    .tabletPostHeader{
+        display: flex !important;
+    }
+}
+
+@media (max-width: 500px) {
+    .tabletPostHeader{
+        width: 100% !important;
+    }
+}
+
+.postHeader_details_div{
+    height: 100%;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    margin-left: 14px;
+}
+
+.username_div{
+    padding: 2px;
+    flex: 1;
+}
+
+.usernamePostHeader{
+    margin: 0;
+    width: max-content;
+}
+
+.name_follow{
+    display: flex;
+}
+
+.dot_div{
+    margin: 0px 6px;
+    display: flex;
+}
+
+.startFollowingPost{
+    color: #0095f6;
+    cursor: pointer;
+}
+
+.location_div{
+    justify-self: normal;
+}
+
+.btn_3_dots{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 15px;
+}
