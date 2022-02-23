@@ -11,6 +11,7 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
 
     const handleFollowing = () => {
         startLoading();
+        closeDialog();
         fetch('/stopFollowing', {
             method: 'DELETE',
             headers: {
@@ -30,7 +31,10 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
                 total_followers: selectedUser.user.total_followers - 1,
                 isFollowing: false
             });
-        }).catch(e => console.error(e.message)).finally(() => {
+        }).catch(e => {
+            adminUser.loadMessageAlert(e.message, false);
+            console.error(e.message)
+        }).finally(() => {
             stopLoading();
         });
     }

@@ -40,12 +40,12 @@ const postComment: RequestHandler = async (req, res, next) => {
     const { user_id, comment } = req.body;
 
     try {
-        const newComment = await pool.query(
-            'INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3) RETURNING *',
+        await pool.query(
+            'INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)',
             [comment, post_id, user_id]
         );
 
-        res.json(newComment.rows[0]);
+        res.sendStatus(203);
     } catch (error) {
         next(error);
     }

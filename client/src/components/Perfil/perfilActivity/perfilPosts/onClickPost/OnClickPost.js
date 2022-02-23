@@ -53,8 +53,14 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
         },
         body: JSON.stringify({ comment: comment })
       }).then(async res => {
-        console.log(await res.json());
+        if (!res.ok) {
+          const errorData = await res.json();
+          return auth.loadMessageAlert(errorData?.message, false);
+        }
+        getComments();
         setComment('');
+      }).catch(e => {
+        auth.loadMessageAlert(e.message, false);
       })
     }
   }
@@ -90,6 +96,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
       headers: { token: localStorage.token }
     }).then(async res => {
       const comments = await res.json();
+      console.log(comments);
       setPostCommentsAndData(comments);
     }).finally(() => {
       setCommentsLoading(false);

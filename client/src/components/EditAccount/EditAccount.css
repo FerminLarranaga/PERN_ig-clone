@@ -1,5 +1,6 @@
 .editAcc_container{
-    width: 50vw;
+    width: 100%;
+    max-width: 700px;
     margin: 40px 0;
     padding: 55px 80px 10px;
     border: 1px solid #dbdbdb;
@@ -38,9 +39,9 @@
 
 /*FORM*/
 
-.editAcc_form{
+/* .editAcc_form{
 
-}
+} */
 
 .editAcc_field{
     display: flex;
@@ -89,4 +90,31 @@
 .editAcc_formSubmit[disabled]{
     opacity: .3;
     cursor: default;
+}
+
+@media (max-width: 850px) {
+    .editAcc_container{
+        padding: 0;
+        background: none;
+        border: none;
+    }
+
+    .editAcc_field{
+        flex-direction: column;
+        margin-left: 30px;
+    }
+
+    .editAcc_fieldName{
+        flex: 0;
+        text-align: left;
+        margin-bottom: 7px;
+    }
+
+    .editAcc_inputDesc{
+        margin-left: 2px;
+    }
+
+    .editAcc_avatarContainer{
+        margin-left: 30px;
+    }
 }
