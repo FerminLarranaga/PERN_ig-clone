@@ -53,5 +53,5 @@ create table followed(
     foreign key (following) references users(id)
 );
 
-ALTER TABLE comments ADD COLUMN comment_data timestamp;
-ALTER TABLE comments ALTER COLUMN comment_data SET NOT NULL;
+ALTER TABLE comments ADD COLUMN comment_date timestamp;
+ALTER TABLE comments ALTER COLUMN comment_date SET NOT NULL;
