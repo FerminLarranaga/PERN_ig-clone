@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
                 const errorData = await res.json();
                 console.log(errorData);
                 setSignInLoading(false);
-                onError(errorData?.message);
+                onError(errorData.message || errorData);
                 return false;
             }
 
@@ -60,7 +60,7 @@ const AuthProvider = ({ children }) => {
                 const errorData = await res.json();
                 console.log(errorData);
                 setSignInLoading(false);
-                onError(errorData?.message);
+                onError(errorData.message || errorData);
                 return false
             }
 

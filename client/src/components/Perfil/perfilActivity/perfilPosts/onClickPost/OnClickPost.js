@@ -51,7 +51,10 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
           'Content-Type': 'application/json',
           token: localStorage.token
         },
-        body: JSON.stringify({ comment: comment })
+        body: JSON.stringify({
+          comment: comment,
+          comment_date: new Date()
+        })
       }).then(async res => {
         if (!res.ok) {
           const errorData = await res.json();

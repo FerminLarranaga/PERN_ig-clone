@@ -122,3 +122,10 @@
   border-top: 1px solid #dbdbdb;
   cursor: pointer;
 }
+
+
+@media (max-width: 500px) {
+  .changeAvatarImg_dialog{
+      width: 90%;
+  }
+}

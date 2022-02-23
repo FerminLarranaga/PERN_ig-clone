@@ -38,6 +38,7 @@ create table comments(
     comment text not null,
     user_id uuid not null,
     post_id uuid not null,
+    comment_date timestamp not null,
     primary key (id),
     foreign key (user_id) references users(id),
     foreign key (post_id) references posts(id)
@@ -51,3 +52,6 @@ create table followed(
     foreign key (follower) references users(id),
     foreign key (following) references users(id)
 );
+
+ALTER TABLE comments ADD COLUMN comment_data timestamp;
+ALTER TABLE comments ALTER COLUMN comment_data SET NOT NULL;

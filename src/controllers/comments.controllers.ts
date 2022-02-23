@@ -6,7 +6,7 @@ const getComments: RequestHandler = async (req, res, next) => {
 
     try {
         const comments = await pool.query(
-            'SELECT comment, username, profile_pic FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $1',
+            'SELECT comment, username, profile_pic FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $1 ORDER BY comment_date DESC',
             [post_id]
         );
         res.json(comments.rows);
@@ -37,12 +37,12 @@ const getSingleComment: RequestHandler = async (req, res, next) => {
 
 const postComment: RequestHandler = async (req, res, next) => {
     const { post_id } = req.params;
-    const { user_id, comment } = req.body;
+    const { user_id, comment, comment_date } = req.body;
 
     try {
         await pool.query(
-            'INSERT INTO comments (comment, post_id, user_id) VALUES ($1, $2, $3)',
-            [comment, post_id, user_id]
+            'INSERT INTO comments (comment, comment_date, post_id, user_id) VALUES ($1, $2, $3, $4)',
+            [comment, comment_date, post_id, user_id]
         );
 
         res.sendStatus(203);

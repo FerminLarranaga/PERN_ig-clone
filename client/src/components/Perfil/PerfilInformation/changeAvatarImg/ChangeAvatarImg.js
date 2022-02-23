@@ -10,39 +10,6 @@ import { LinearProgress } from "@material-ui/core";
 import './ChangeAvatarImg.css';
 import { useAuth } from "../../../../App";
 
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        borderRadius: '20px',
-        background: 'linear-gradient(135deg, rgba(255,188,116, 0.60), rgba(167, 156, 208, 0.60))',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
-        maxHeight: 550,
-        overflowY: 'auto',
-        position: 'relative'
-    },
-    progressActive: {
-        borderRadius: '20px',
-        background: 'linear-gradient(135deg, rgba(255,188,116, 0.75), rgba(167, 156, 208, 0.75))',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        flexDirection: 'column',
-        maxHeight: 550,
-        overflowY: 'auto',
-        opacity: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-}));
-
 const BorderLinearProgress = withStyles((theme) => ({
     root: {
         height: 10,
@@ -57,12 +24,11 @@ const BorderLinearProgress = withStyles((theme) => ({
     },
 }))(LinearProgress);
 
-function ChangeAvatarImg({ handleClose, open }) {
+function ChangeAvatarImg({ handleClose }) {
     const [newProfilePhoto, setNewProfilePhoto] = React.useState(null);
     const [imgPreviewSrc, setImgPreviewSrc] = React.useState('');
     const [progress, setProgress] = React.useState(0);
     const auth = useAuth();
-    const classes = useStyles();
 
     const previewImg = (img) => {
         const reader = new FileReader();

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../../App';
-
-import LogOutModal from "./sign_buttons/LogOutModal";
+import LogOut from '../../Dialogs/LogOut/LogOut';
 
 import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
@@ -10,6 +9,7 @@ import { ListItemText, ListItemIcon } from '@material-ui/core';
 import Avatar from "@material-ui/core/Avatar";
 import PersonIcon from '@material-ui/icons/Person';
 import { useNavigate } from 'react-router-dom';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const StyledMenu = withStyles({
   paper: {
@@ -43,7 +43,8 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export default function MenuUser() {
-  const [anchorEl, setAnchorEl] = React.useState(null); // Menu abierto o cerrado
+  const [anchorEl, setAnchorEl] = useState(null); // Menu abierto o cerrado
+  const [logOutModalOpen, setLogOutModalOpen] = useState(false);
   const auth = useAuth();
   const navigate = useNavigate();
 
@@ -83,10 +84,20 @@ export default function MenuUser() {
           <ListItemText>Perfil</ListItemText>
         </StyledMenuItem>
         <div style={{borderTop: '1px solid lightgray'}}>
-          <LogOutModal StyledMenuItem={StyledMenuItem} closeMenu={handleClose}/>
+          <StyledMenuItem onClick={() => { setLogOutModalOpen(true); handleClose();}}>
+            <ListItemIcon>
+              <ExitToAppIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Cerrar sesión</ListItemText>
+          </StyledMenuItem>
         </div>
       </div>
       </StyledMenu>
+      {
+        logOutModalOpen && (
+          <LogOut closeDialog={() => setLogOutModalOpen(false)}/>
+        )
+      }
     </div>
   );
 }
