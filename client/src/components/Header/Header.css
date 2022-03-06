@@ -27,4 +27,14 @@
 
 .header__options{
     display: flex;
+    gap: 22px;
+    align-items: center;
+}
+
+.header__svgBtn {
+    cursor: pointer;
+}
+
+.header__svgBtn:active{
+    opacity: .5;
 }

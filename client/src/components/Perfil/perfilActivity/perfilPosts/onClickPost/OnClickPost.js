@@ -11,7 +11,7 @@ import { Button, TextareaAutosize } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import "./OnClickPost.css";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../../../App';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,13 +34,14 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
   const [postLoading, setPostLoading] = useState(true);
   const navigate = useNavigate();
   const auth = useAuth();
-  const { username } = useParams();
+  const location = useLocation();
 
   const classes = useStyles();
 
   const handleClose = () => {
     setOpen(false);
-    navigate(-1);
+    const from = location.state?.from?.pathname? -1 : '/';
+    navigate(from);
   };
 
   const handlePostComment = () => {
@@ -71,7 +72,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
   const getPost = function () {
     setPostLoading(true);
     console.log('GETTING POST');
-    fetch(`/posts/${username}/${postId}`, {
+    fetch(`/posts/p/${postId}`, {
       method: 'GET',
       headers: { token: localStorage.token }
     }).then(async res => {
@@ -137,8 +138,8 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
             <div className={classes.paper + ' openedPost_container'}>
               <OnClickPost_header
                 deviceClassName='tabletPostHeader'
-                profilePhoto={auth.user.profile_pic}
-                username={auth.user.username}
+                profilePhoto={post.profile_pic}
+                username={post.username}
                 isAdmin={isAdmin}
                 isFollowing={isFollowing}
               />
@@ -175,7 +176,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
                             <div>
                               {
                                 postCommentsAndData.map(dataComment => {
-                                  return <Comment comment={dataComment.comment} username={dataComment.username} profilePhoto={dataComment.profile_pic} />
+                                  return <Comment key={dataComment.id} comment={dataComment.comment} username={dataComment.username} profilePhoto={dataComment.profile_pic} />
                                 })
                               }
                             </div>

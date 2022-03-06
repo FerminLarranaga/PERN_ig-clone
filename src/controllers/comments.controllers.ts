@@ -3,11 +3,12 @@ import pool from '../config/db';
 
 const getComments: RequestHandler = async (req, res, next) => {
     const { post_id } = req.params;
+    const { limit } = req.query;
 
     try {
         const comments = await pool.query(
-            'SELECT comment, username, profile_pic FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $1 ORDER BY comment_date DESC',
-            [post_id]
+            'SELECT comment, username, profile_pic, comments.id FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $1 ORDER BY comment_date DESC LIMIT $2',
+            [post_id, limit]
         );
         res.json(comments.rows);
     } catch (error) {

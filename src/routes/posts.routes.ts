@@ -5,15 +5,18 @@ import {
     getSinglePost,
     uploadPost,
     updatePost,
-    deletePost
+    deletePost,
+    getFollowingPosts
 }
 from '../controllers/posts.controllers';
 
 const router = Router();
 
+router.get('/getFollowingPosts', isAuthorized, getFollowingPosts);
+
 router.get('/:username', getPosts);
 
-router.get('/:username/:postId', getSinglePost);
+router.get('/p/:postId', getSinglePost);
 
 router.post('/', isAuthorized, uploadPost);
 

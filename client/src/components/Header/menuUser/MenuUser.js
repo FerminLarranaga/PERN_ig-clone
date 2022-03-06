@@ -60,12 +60,13 @@ export default function MenuUser() {
 
   return (
     // Margen entre el AddPostIcon y el Menu
-    <div style={{marginLeft: 10}}>
+    <div>
       {/* FOTO DE PERFIL */}
       <Avatar
         src={auth.user.profile_pic}
         fontSize="small"
         className="pointer"
+        style={{width: 24, height: 24}}
         onClick={handleClick}
       />
       {/* MENU */}

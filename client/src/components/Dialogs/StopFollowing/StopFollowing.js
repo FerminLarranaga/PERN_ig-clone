@@ -40,10 +40,10 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
     }
 
     useEffect(() => {
-        document.body.style = 'overflow: hidden;';
+        document.body.style = 'overflow: hidden; margin-right: 17px;';
 
         return () => {
-            document.body.style = 'overflow: auto;';
+            document.body.style = 'overflow: auto; margin-right: 17px;';
         }
     }, [])
 

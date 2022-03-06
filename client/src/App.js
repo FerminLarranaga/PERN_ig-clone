@@ -6,8 +6,10 @@ import RequireAuthProfile from './authentication/RequireAuthProfile';
 import RequireAuth from './authentication/RequireAuth';
 import Register from './components/Auth/Register';
 import SignIn from './components/Auth/SignIn';
+import Suggests from './components/Feed/Suggests/Suggests';
 import 'tachyons';
-import MissingRoute from './MissingRoute';
+// import MissingRoute from './MissingRoute';
+import Feed from './components/Feed/Feed'
 import Perfil from './components/Perfil/Perfil';
 import Header from './components/Header/Header';
 import EditAccount from './components/EditAccount/EditAccount';
@@ -37,7 +39,21 @@ function App() {
               </RequireAuth>
             } />
 
-            <Route path='/' element={<MissingRoute />} />
+            <Route path='/explore/people' element={
+              <RequireAuth>
+                <Header />
+                <div className='feed_container'>
+                  <Suggests />
+                </div>
+              </RequireAuth>
+            } />
+
+            <Route path='/' element={
+              <RequireAuth>
+                <Header />
+                <Feed />
+              </RequireAuth>
+            } />
 
           </Routes>
         </BrowserRouter>
