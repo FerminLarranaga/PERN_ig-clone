@@ -5,9 +5,10 @@ import './StopFollowing.css';
 import { useAuth } from '../../../App';
 import { useSelectedUser } from '../../../authentication/RequireAuthProfile';
 
-const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
+const StopFollowing = ({ closeDialog, startLoading, stopLoading, postsUser, setIsFollowing }) => {
     const adminUser = useAuth();
-    const selectedUser = useSelectedUser();
+    let selectedUser = useSelectedUser();
+    selectedUser = postsUser? postsUser : selectedUser;
 
     const handleFollowing = () => {
         startLoading();
@@ -25,12 +26,18 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
                 return
             }
 
+            if (postsUser) {
+                setIsFollowing(false);
+                return
+            }
+
             adminUser.setUser({ ...adminUser.user, total_followed: adminUser.user.total_followed - 1 });
             selectedUser.setUser({
                 ...selectedUser.user,
                 total_followers: selectedUser.user.total_followers - 1,
                 isFollowing: false
             });
+            setIsFollowing(false);
         }).catch(e => {
             adminUser.loadMessageAlert(e.message, false);
             console.error(e.message)
@@ -43,7 +50,7 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading }) => {
         document.body.style = 'overflow: hidden; margin-right: 17px;';
 
         return () => {
-            document.body.style = 'overflow: auto; margin-right: 17px;';
+            document.body.style = 'overflow: auto; margin-right: 0;';
         }
     }, [])
 

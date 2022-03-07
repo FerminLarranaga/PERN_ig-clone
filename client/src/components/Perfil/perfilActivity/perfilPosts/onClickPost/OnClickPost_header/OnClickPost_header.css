@@ -1,8 +1,9 @@
 .post_information_div{
     display: flex;
     padding: 16px;
+    margin-bottom: 6px;
     padding-right: 0;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #efefef;
     width: 100%;
     position: sticky;
     top: 0;
@@ -46,6 +47,27 @@
 .usernamePostHeader{
     margin: 0;
     width: max-content;
+    text-decoration: none;
+    color: #262626;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.usernamePostHeader:active{
+    opacity: .5;
+}
+
+.postHeader_startFollowingBtn{
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    color: #262626;
+    margin: 0;
+}
+
+.postHeader_startFollowingBtn:active{
+    opacity: .5;
 }
 
 .name_follow{
@@ -60,6 +82,10 @@
 .startFollowingPost{
     color: #0095f6;
     cursor: pointer;
+}
+
+.startFollowingPost:active{
+    opacity: .5;
 }
 
 .location_div{

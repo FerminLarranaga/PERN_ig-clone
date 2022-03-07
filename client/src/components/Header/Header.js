@@ -13,13 +13,12 @@ function Header() {
         <header className="header">
             <div className="header__container">
                 {/* LOGO DE INSTAGRAM */}
-                <img
-                    className="headerlogo"
-                    alt="Instagram"
-                    src={instagramTitle}
-                    width="130"
-                    height="30"
-                />
+                <Link to={'/'} className="headerlogo">
+                    <img
+                        alt="Instagram"
+                        src={instagramTitle}
+                    />
+                </Link>
                 <UserSearchBox />
                 {/* OPCIONES DEL HEADER (MENU, ADDPOST) */}
                 <div className="header__options">

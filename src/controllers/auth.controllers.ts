@@ -125,7 +125,7 @@ const getUsers: RequestHandler = async (req, res, next) => {
 
   try {
     const res2 = await pool.query(
-      "SELECT username, profile_pic FROM users WHERE id != $1 LIMIT $2 OFFSET $3",
+      "SELECT username, profile_pic, full_name FROM users WHERE id != $1 LIMIT $2 OFFSET $3",
       [user_id, amount, offset]
     );
 

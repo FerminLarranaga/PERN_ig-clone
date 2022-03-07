@@ -1,4 +1,4 @@
-.rw-widget {
+/* .rw-widget {
     width: 100%;
     max-width: 500px;
     margin: 0 10px;
@@ -10,4 +10,99 @@
         right: -25% !important;
         left: -25% !important;
     }
+} */
+
+.userSearchBox_container{
+    height: 36px;
+    width: 100%;
+    min-width: 125px;
+    max-width: 268px;
+    position: relative;
+    z-index: 2;
+}
+
+.userSearchBox_inputContainer{
+    height: 100%;
+    width: 100%;
+}
+
+.userSearchBox_inputContainer > svg{
+    position: absolute;
+}
+
+.userSearchBox_input{
+    background: #efefef;
+    font-size: 16px;
+    padding: 3px 16px;
+    border-radius: 8px;
+    line-height: 18px;
+    height: 100%;
+    width: 100%;
+    font-weight: 300;
+    color: #262626;
+}
+
+.userSearchBox_input:focus-visible{
+    outline: none;
+}
+
+.userSearchBox_dropdown{
+    position: absolute;
+    width: 375px;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
+    z-index: 2;
+}
+
+.userSearchBox_dropdownExit{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.userSearchBox_dropdownSquare{
+    width: 14px;
+    height: 14px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid white;
+    box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    transform: rotate(45deg);
+    z-index: -10;
+}
+
+.userSearchBox_dropdownProfiles{
+    background-color: white;
+    width: 100%;
+    border-radius: 6px;
+    padding: 12px 16px;
+}
+
+.userSearchBox_dropdownProfilesTitle{
+    font-weight: 600;
+    color: #262626;
+    line-height: 24px;
+    font-size: 16px;
+    margin: 4px 0 11px;
+}
+
+.userSearchBox_dropdownProfile{
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+}
+
+.userSearchBox_dropdownProfile:hover{
+    background-color: #fafafa;
 }

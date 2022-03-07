@@ -7,8 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Button, TextareaAutosize } from '@material-ui/core';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import { CircularProgress } from '@material-ui/core';
 
 import "./OnClickPost.css";
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowing }) {
+export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowing, postsUser }) {
   const [post, setPost] = useState(null);
   const [postCommentsAndData, setPostCommentsAndData] = useState([]);
 
@@ -40,11 +39,25 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
 
   const handleClose = () => {
     setOpen(false);
-    const from = location.state?.from?.pathname? -1 : '/';
-    navigate(from);
+    navigate(location.pathname);
   };
 
-  const handlePostComment = () => {
+  const changeCommentHandler = (evt) => {
+    setComment(evt.target.value);
+    if (evt.target.value) {
+      const submitBtn = evt.target.form.lastChild;
+      submitBtn.disabled = false;
+    } else {
+      const submitBtn = evt.target.form.lastChild;
+      submitBtn.disabled = true;
+    }
+    evt.target.style.height = 'auto';
+    let newHeight = evt.target.value.split('\n').length * 18;
+    evt.target.style.height = newHeight + 'px';
+  }
+
+  const handlePostComment = (evt) => {
+    evt.preventDefault();
     if (comment) {
       fetch(`/comments/${postId}`, {
         method: 'POST',
@@ -63,6 +76,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
         }
         getComments();
         setComment('');
+        evt.target.reset();
       }).catch(e => {
         auth.loadMessageAlert(e.message, false);
       })
@@ -76,7 +90,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
       method: 'GET',
       headers: { token: localStorage.token }
     }).then(async res => {
-      if (!res.ok){
+      if (!res.ok) {
         const errorData = await res.json();
         console.error(errorData);
         return
@@ -142,6 +156,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
                 username={post.username}
                 isAdmin={isAdmin}
                 isFollowing={isFollowing}
+                postsUser={postsUser}
               />
               <div className='postImg_and_comments_container'>
                 <div className='img_div'>
@@ -160,18 +175,19 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
                     username={post.username}
                     isAdmin={isAdmin}
                     isFollowing={isFollowing}
+                    postsUser={postsUser}
                   />
                   <div className='comment_section' style={{ overflow: commentsLoading ? 'hidden' : '' }}>
-                  {
-                    post.caption && (
-                      <div className='first_comment'>
-                        <Comment comment={post.caption} username={post.username} profilePhoto={post.profile_pic} />
-                      </div>
-                    )
-                  }
+                    {
+                      post.caption && (
+                        <div className='first_comment'>
+                          <Comment comment={post.caption} username={post.username} profilePhoto={post.profile_pic} />
+                        </div>
+                      )
+                    }
                     {
                       function () {
-                          if (!commentsLoading) {
+                        if (!commentsLoading) {
                           return (
                             <div>
                               {
@@ -185,7 +201,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
                           let loadingComments = [];
                           for (let i = 0; i < 10; i++) {
                             loadingComments.push(
-                              <div className='post_comment'>
+                              <div key={i} className='post_comment'>
                                 <span className='loading_comment_avatar'></span>
                                 <div className='loading_comment_caption'>
                                   <div style={{ display: 'flex', width: '100%' }}>
@@ -208,25 +224,28 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
                       }()
                     }
                   </div>
-                  <div className={`add_comment_div addComment_computer`}>
-                    <TextareaAutosize
-                      className='add_comment_textarea'
-                      placeholder='Agregar comentario'
-                      onChange={(evt) => setComment(evt.target.value)}
-                      value={comment}
-                    />
-                    <Button className='publish_comment' onClick={handlePostComment}><AddBoxIcon fontSize='large' /></Button>
-                  </div>
+                  <section style={{ width: '100%' }} className='feedPost_bottomAddComment'>
+                    <form onSubmit={evt => handlePostComment(evt)} className='feedPost_bottomAddCommentForm'>
+                      <textarea
+                        type='text'
+                        placeholder='Agrega un comentario...'
+                        className='feedPost_bottomAddCommentInput'
+                        autoComplete='off'
+                        autoCorrect='off'
+                        autoCapitalize='off'
+                        onChange={changeCommentHandler}
+                      />
+                      <button type='submit' className='feedPost_bottomAddCommentPublish' disabled>Publicar</button>
+                    </form>
+                    {
+                      false && (
+                        <div className='feedPost_loadingNewComment'>
+                          <CircularProgress style={{ width: '25px', height: '25px' }} />
+                        </div>
+                      )
+                    }
+                  </section>
                 </div>
-              </div>
-              <div className={`add_comment_div addComment_tablet`}>
-                <TextareaAutosize
-                  className='add_comment_textarea'
-                  placeholder='Agregar comentario'
-                  onChange={(evt) => setComment(evt.target.value)}
-                  value={comment}
-                />
-                <Button className='publish_comment' onClick={handlePostComment}><AddBoxIcon fontSize='large' /></Button>
               </div>
             </div>
           </Fade>

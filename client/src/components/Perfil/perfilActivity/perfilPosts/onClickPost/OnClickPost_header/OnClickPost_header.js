@@ -9,12 +9,15 @@ import StopFollowing from '../../../../../Dialogs/StopFollowing/StopFollowing';
 
 import './OnClickPost_header.css';
 import { CircularProgress } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
-const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, isFollowing }) => {
+const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, isFollowing, postsUser }) => {
     const [openStopFollowing, setOpenStopFollowing] = useState(false);
     const [loadingFollow, setLoadingFollow] = useState(false);
     const adminUser = useAuth();
-    const selectedUser = useSelectedUser();
+    let selectedUser = useSelectedUser();
+    selectedUser = postsUser? {user: {username: username}} : selectedUser;
+    const [isBeingFollowed, setIsBeingFollowed] = useState(isFollowing);
 
     const handleFollowing = () => {
         setLoadingFollow(true);
@@ -31,12 +34,18 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                 return
             }
 
+            if (postsUser) {
+                setIsBeingFollowed(true);
+                return
+            }
+            console.group('HI')
             adminUser.setUser({ ...adminUser.user, total_followed: adminUser.user.total_followed + 1 });
             selectedUser.setUser({
                 ...selectedUser.user,
                 total_followers: selectedUser.user.total_followers + 1,
                 isFollowing: true
             });
+            setIsBeingFollowed(true);
         }).catch(e => console.error(e.message)).finally(() => {
             setLoadingFollow(false);
         });
@@ -45,11 +54,11 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
     return (
         <header className={`post_information_div ${deviceClassName}`}>
             <div>
-                <Avatar src={profilePhoto} />
+                <Avatar style={{width: 32, height: 32}} src={profilePhoto} />
             </div>
             <div className='postHeader_details_div'>
                 <div className='fw6 username_div'>
-                    <p className='usernamePostHeader'>{username}</p>
+                    <Link to={`/${username}`} className='usernamePostHeader'>{username}</Link>
                 </div>
 
                 {
@@ -60,7 +69,7 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                             return (
                                 <Fragment>
                                     <div className='dot_div'>
-                                        <FiberManualRecordIcon style={{ width: 6, height: 6 }} />
+                                        <FiberManualRecordIcon style={{ width: 5, height: 5 }} />
                                     </div>
                                     <div className='ml3'>
                                         <CircularProgress style={{width: '20px', height: '20px'}}/>
@@ -69,13 +78,13 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                             )
                         }
                         
-                        if (isFollowing) {
+                        if (isBeingFollowed) {
                             return (
                                 <Fragment>
                                     <div className='dot_div'>
-                                        <FiberManualRecordIcon style={{ width: 6, height: 6 }} />
+                                        <FiberManualRecordIcon style={{ width: 5, height: 5 }} />
                                     </div>
-                                    <div onClick={() => setOpenStopFollowing(true)} className='fw6 pa2 pl0 pointer'>
+                                    <div onClick={() => setOpenStopFollowing(true)} className='fw6 pa2 pl0 pointer postHeader_startFollowingBtn'>
                                         <span>Siguiendo</span>
                                     </div>
                                 </Fragment>
@@ -104,6 +113,8 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                         closeDialog={() => setOpenStopFollowing(false)}
                         startLoading={() => setLoadingFollow(true)}
                         stopLoading={() => setLoadingFollow(false)}
+                        postsUser={postsUser && {user: {username: username, profile_pic: profilePhoto}}}
+                        setIsFollowing={setIsBeingFollowed}
                     />
                 )
             }

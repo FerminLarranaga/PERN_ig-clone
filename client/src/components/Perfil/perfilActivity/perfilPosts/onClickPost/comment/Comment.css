@@ -7,3 +7,18 @@
     margin: 10px;
     margin-top: 5px;
 }
+
+.postComment_username{
+    text-decoration: none;
+    color: #262626;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.postComment_content{
+    text-decoration: none;
+    color: #262626;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+}

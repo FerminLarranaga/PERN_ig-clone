@@ -1,6 +1,6 @@
 import { Avatar, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../App';
 import OnClickPost from '../../Perfil/perfilActivity/perfilPosts/onClickPost/OnClickPost';
 import './FeedPosts.css';
@@ -149,10 +149,10 @@ const FeedPosts = () => {
                                         src={post.profile_pic}
                                         className='feedPost_headerAvatar'
                                     />
-                                    <div className='feedPost_headerInfo'>
+                                    <Link to={`/${post.username}`} className='feedPost_headerInfo'>
                                         <span className='feedPost_headerUsername'>{post.username}</span>
                                         {/* <span className='feedPost_headerFullName'>Full Name</span> */}
-                                    </div>
+                                    </Link>
                                 </div>
                                 <div className='feedPost_headerOptions'>
                                     <svg aria-label="Más opciones" className="_8-yf5 " color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24">
@@ -342,6 +342,7 @@ const FeedPosts = () => {
                 open={Boolean(openedPostId)}
                 setOpen={setOpenedPostId}
                 postId={openedPostId}
+                postsUser={true}
             />
             <div ref={bottomDiv} />
         </div>

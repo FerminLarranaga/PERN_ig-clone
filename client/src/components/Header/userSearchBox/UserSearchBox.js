@@ -1,48 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Avatar } from "@material-ui/core";
 import DropdownList from 'react-widgets/lib/DropdownList';
 import 'react-widgets/dist/css/react-widgets.css';
 
 import './UserSearchBox.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function UserSearchBox() {
   const [options, setOptions] = useState([]);
-  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const dropdownRef = useRef();
+  const dropdownExitRef = useRef();
 
   const getUsers = async () => {
     const res = await fetch('/getUsers', {
       method: 'GET',
-      headers: {token: localStorage.token}
+      headers: { token: localStorage.token }
     });
 
-    if (!res.ok){
-      return []
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.error(errorData?.message ? errorData.message : errorData);
+      return
     }
 
     setOptions(await res.json());
+  }
+
+  const handleQuery = (evt) => {
+    setQuery(evt.target.value);
+    if (evt.target.value) {
+      dropdownRef.current.style = 'display: block;';
+    } else {
+      dropdownRef.current.style = 'display: none;';
+    }
+  }
+
+  const handleDropdown = (display) => {
+    dropdownRef.current.style.display = display;
+    dropdownExitRef.current.style.display = display;
   }
 
   useEffect(() => {
     getUsers();
   }, []);
 
-  const itemComponent = ({ item }) => (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Avatar src={item.profile_pic} style={{ width: 40, height: 40, marginRight: 10 }} />
-      <span className='fw7'>{item.username}</span>
-    </div>
-  );
-
   return (
-    <DropdownList
-      filter='contains'
-      data={options}
-      textField='username'
-      onChange={value => navigate(`/${value.username}`)}
-      placeholder='Busca'
-      itemComponent={itemComponent}
-    />
+    <div className='userSearchBox_container'>
+      <div className='userSearchBox_inputContainer'>
+        <input
+          type='text'
+          onChange={handleQuery}
+          className='userSearchBox_input'
+          placeholder='Buscar'
+          onFocus={() => handleDropdown('block')}
+        />
+        <div
+          className='userSearchBox_dropdownExit'
+          style={{ display: 'none' }}
+          ref={dropdownExitRef}
+          onClick={() => handleDropdown('none')}
+        />
+        {/* <svg ariaLabel="Buscar" class="_8-yf5 " color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
+          <path d="M19 10.5A8.5 8.5 0 1110.5 2a8.5 8.5 0 018.5 8.5z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
+          </path>
+          <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="16.511" x2="22" y1="16.511" y2="22">
+          </line>
+        </svg> */}
+      </div>
+      <div className='userSearchBox_dropdown' style={{ display: 'none' }} ref={dropdownRef}>
+        <div className='userSearchBox_dropdownSquare' />
+        <div className='userSearchBox_dropdownProfiles'>
+          <h4 className='userSearchBox_dropdownProfilesTitle'>Sugerencias</h4>
+          {
+            options.map(item => (
+              <Link key={item.username} to={`/${item.username}`} className='userSearchBox_dropdownProfile'>
+                <div className='suggests_userInfo' style={{justifyContent: 'space-between'}}>
+                  <Avatar
+                    className='suggests_userInfoAvatar'
+                    src={item.profile_pic}
+                    style={{width: 40, height: 40}}
+                  />
+                  <div className='suggests_userInfoTxt'>
+                    <span className='suggests_userUsername'>{item.username}</span>
+                    <span className='suggests_userFullName'>{item.full_name}</span>
+                  </div>
+                </div>
+                {/* <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button> */}
+                {/* <svg ariaLabel="Cerrar" class="_8-yf5 " color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
+                  <polyline fill="none" points="20.643 3.357 12 12 3.353 20.647" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3">
+                  </polyline>
+                  <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" x1="20.649" x2="3.354" y1="20.649" y2="3.354">
+                  </line>
+                </svg> */}
+              </Link>
+            ))
+          }
+        </div>
+      </div>
+    </div>
   );
 }

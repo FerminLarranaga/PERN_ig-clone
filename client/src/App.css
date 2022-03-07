@@ -51,32 +51,32 @@
 }
 
 /* width */
-.modalScrollbar::-webkit-scrollbar,
+/* .modalScrollbar::-webkit-scrollbar,
 .postImg_and_comments_container::-webkit-scrollbar{
   width: 12px;
-}
+} */
 
 /*ADDPOST, CHANGE AVATAR IMG*/
 /* Track */
-.modalScrollbar::-webkit-scrollbar-track,
+/* .modalScrollbar::-webkit-scrollbar-track,
 .postImg_and_comments_container::-webkit-scrollbar-track {
   margin: 14px;
   background: rgba(125, 105, 166, 0.3);
   border-radius: 30px;
-}
+} */
  
 /* Handle */
-.modalScrollbar::-webkit-scrollbar-thumb,
+/* .modalScrollbar::-webkit-scrollbar-thumb,
 .postImg_and_comments_container::-webkit-scrollbar-thumb {
   background: rgba(17, 19, 37, 0.7);
   border-radius: 30px;
-}
+} */
 
 /* Handle on hover */
-.modalScrollbar::-webkit-scrollbar-thumb:hover,
+/* .modalScrollbar::-webkit-scrollbar-thumb:hover,
 .postImg_and_comments_container::-webkit-scrollbar-thumb:hover {
   background: rgba(17, 19, 37, 0.8); 
-}
+} */
 
 /*APP*/
 /* html::-webkit-scrollbar{

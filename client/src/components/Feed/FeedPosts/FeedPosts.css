@@ -41,6 +41,11 @@
     flex-direction: column;
     margin-left: 14px;
     justify-content: center;
+    text-decoration: none;
+}
+
+.feedPost_headerInfo:active{
+    opacity: .5;
 }
 
 .feedPost_headerUsername{
@@ -279,6 +284,7 @@
     margin: -2px 0 -3px;
     font-weight: 600;
     color: #0095f6;
+    background: none;
     cursor: pointer;
 }
 
