@@ -115,6 +115,10 @@ ul{
     cursor: pointer;
 }
 
+.avatarContainerActive:active{
+    opacity: .8;
+}
+
 .avatarContainer > img{
     position: absolute;
     width: 100%;

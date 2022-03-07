@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../App';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { storage } from '../../../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-import PostAddIcon from '@material-ui/icons/PostAdd';
+// import PostAddIcon from '@material-ui/icons/PostAdd';
+import Compressor from 'compressorjs';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -55,6 +56,8 @@ export default function AddPost() {
     const auth = useAuth();
 
     const [img, setImg] = useState(null); // Imagen seleccionada a subir
+    const [compressedImg, setCompressedImg] = useState(null); // Thumbnail
+    const compressedImgURL = useRef('');
     const [imgFormat, setImgFormat] = useState('');
     const [imgPreviewSrc, setImgPreviewSrc] = useState(''); // source de la imagen seleccionada
     const [progress, setProgress] = useState(0); // Porgreso de carga de imagen
@@ -77,6 +80,8 @@ export default function AddPost() {
     // Cerrar modal y resetear states
     const handleClose = () => {
         setImg(null);
+        setCompressedImg(null);
+        compressedImgURL.current = '';
         setImgPreviewSrc('');
         setCaption('');
         setProgress(0);
@@ -100,18 +105,90 @@ export default function AddPost() {
         if (file) {
             const fileFormat = validateFormat(file);
             if (fileFormat) {
-                console.log(file);
-                setImg(file);
                 setImgFormat(fileFormat);
                 previewImg(evt);
+                if (fileFormat === 'img') {
+                    let newQuality;
+                    const fileSize = file.size / 1000000;
+                    switch(true){
+                        case (fileSize >= 5):
+                            newQuality = .2;
+                            break;
+                        case (fileSize >= 4):
+                            newQuality = .3;
+                            break;
+                        case (fileSize >= 3):
+                            newQuality = .4;
+                            break;
+                        case (fileSize >= 2):
+                            newQuality = .5;
+                            break;
+                        case (fileSize >= 1):
+                            newQuality = .6;
+                            break;
+                        default:
+                            newQuality = .8;
+                            break;
+                    }
+                    new Compressor(file, {
+                        quality: newQuality,
+                        maxWidth: 2500,
+                        resize: 'contain',
+                        success: (compressedRes) => {
+                            setImg(compressedRes)
+                        }
+                    });
+
+                    new Compressor(file, {
+                        quality: .8,
+                        height: 500,
+                        width: 500,
+                        resize: 'cover',
+                        success: (compressedRes) => {
+                            setCompressedImg(compressedRes);
+                        }
+                    });
+                } else {
+                    setImg(file);
+                }
             }
         }
     }
 
-    const handleUpload = () => {
-        if (progress) return false;
+    const uploadCompressedImg = () => {
+        if (compressedImgURL.current || progress) return
 
-        setProgress(10);
+        setProgress(1);
+        const pathStorage = 'COMPRESSED' + img.name + Math.random();
+
+        const storageRef = ref(storage, `${auth.user.username}/posts_${imgFormat + 's'}/${pathStorage}`);
+        const uploadTask = uploadBytesResumable(storageRef, compressedImg);
+
+        uploadTask.on(
+            'state_changed',
+            () => {
+                setProgress(10);
+            },
+
+            (err) => {
+
+            },
+
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then(url => {
+                    compressedImgURL.current = url;
+                    handleUpload();
+                })
+            }
+        )
+    }
+
+    const handleUpload = () => {
+        if (!compressedImgURL.current) {
+            uploadCompressedImg();
+            return            
+        }
+
         // Crear ruta de subida en storage y poner img
         let childRutaStorage = img.name + Math.random();
 
@@ -152,7 +229,7 @@ export default function AddPost() {
                     // auth.setUser({...auth.user, total_posts: auth.user.total_posts + 1});
                     auth.autoLoginUser();
                     handleClose();
-                    auth.loadMessageAlert('Successfuly uploaded post', true)
+                    auth.loadMessageAlert('Successfuly uploaded post', true);
                 })
             }
         )
@@ -163,6 +240,7 @@ export default function AddPost() {
             post_date: new Date(),
             caption: caption,
             image_url: imgUrl,
+            compressed_url: compressedImgURL.current,
             file_format: imgFormat,
         }
 

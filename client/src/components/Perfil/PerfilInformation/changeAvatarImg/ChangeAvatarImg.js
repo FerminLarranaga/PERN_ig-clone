@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import ReactDOM from 'react-dom';
 import { storage } from "../../../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import Compressor from "compressorjs";
 
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import PublishIcon from '@material-ui/icons/Publish';
+import { withStyles } from '@material-ui/core/styles';
 import { LinearProgress } from "@material-ui/core";
 
 import './ChangeAvatarImg.css';
@@ -41,8 +41,16 @@ function ChangeAvatarImg({ handleClose }) {
     }
 
     const handleImg = (evt) => {
-        if (evt.target.files[0]) {
-            setNewProfilePhoto(evt.target.files[0]);
+        const file = evt.target.files[0];
+        if (file) {
+            new Compressor(file, {
+                quality: .9,
+                width: 600,
+                resize: 'contain',
+                success: (compressedRes) => {
+                    setNewProfilePhoto(compressedRes);
+                }
+            })
             previewImg(evt);
         }
     }
@@ -101,9 +109,9 @@ function ChangeAvatarImg({ handleClose }) {
                 'Content-Type': 'application/json',
                 token: localStorage.token
             },
-            body: JSON.stringify({ newProfilePic: ''})
+            body: JSON.stringify({ newProfilePic: '' })
         }).then(async res => {
-            if (!res.ok){
+            if (!res.ok) {
                 auth.loadMessageAlert('Error while changing profile photo', false);
                 console.error(res);
             }
@@ -125,7 +133,7 @@ function ChangeAvatarImg({ handleClose }) {
 
     return ReactDOM.createPortal(
         <div className='changeAvatarImg_dialogContainer'>
-            <div onClick={handleClose} className='changeAvatarImg_BG'/>
+            <div onClick={handleClose} className='changeAvatarImg_BG' />
             <div className={`changeAvatarImg_dialog ${progress && 'changeAvatarImg_dialogLoading'}`}>
                 <h1 className="changeAvatarImg_dialogTitle">Cambiar foto del perfil</h1>
                 {newProfilePhoto && <img alt={newProfilePhoto.name} src={imgPreviewSrc} className="imgPreview" />}
@@ -139,9 +147,14 @@ function ChangeAvatarImg({ handleClose }) {
                 <div className='changeAvatarImg_btns'>
                     {
                         newProfilePhoto && (
-                            <button onClick={handleUpload} className='changeAvatarImg_uploadBtn'>
-                                <PublishIcon />
-                            </button>
+                            // <button onClick={handleUpload} className='changeAvatarImg_uploadBtn'>
+                            //     <PublishIcon />
+                            // </button>
+                            <div className='changeAvatarImg_changeImgBtnContainer'>
+                                <button className="changeAvatarImg_changeImgBtn" onClick={handleUpload}>
+                                    Subir foto
+                                </button>
+                            </div>
                         )
                     }
                     <div className='changeAvatarImg_changeImgBtnContainer'>

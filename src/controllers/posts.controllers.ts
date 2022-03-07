@@ -6,7 +6,7 @@ const getPosts: RequestHandler = async (req, res, next) => {
 
   try {
     const posts = await pool.query(
-      "SELECT posts.id, image_url, caption, file_format, post_date, vid_duration FROM posts INNER JOIN users ON posts.user_id = users.id WHERE users.username = $1 ORDER BY post_date DESC",
+      "SELECT posts.id, image_url, compressed_url, caption, file_format, post_date, vid_duration FROM posts INNER JOIN users ON posts.user_id = users.id WHERE users.username = $1 ORDER BY post_date DESC",
       [username]
     );
 
@@ -37,13 +37,13 @@ const getSinglePost: RequestHandler = async (req, res, next) => {
 };
 
 const uploadPost: RequestHandler = async (req, res, next) => {
-  const { user_id, image_url, caption, file_format, post_date, vid_duration } =
+  const { user_id, image_url, caption, file_format, post_date, vid_duration, compressed_url } =
     req.body;
 
   try {
     const newPost = await pool.query(
-      "INSERT INTO posts (user_id, image_url, caption, post_date, file_format, vid_duration) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [user_id, image_url, caption, post_date, file_format, vid_duration]
+      "INSERT INTO posts (user_id, image_url, compressed_url, caption, post_date, file_format, vid_duration) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [user_id, image_url, compressed_url, caption, post_date, file_format, vid_duration]
     );
 
     await pool.query(

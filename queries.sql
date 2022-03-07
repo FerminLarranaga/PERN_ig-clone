@@ -25,6 +25,7 @@ create table posts(
     id uuid default uuid_generate_v4 (),
     caption text,
     image_url text not null,
+    compressed_url text not null,
     user_id uuid not null,
     post_date timestamp not null,
     file_format varchar(3) not null,
@@ -53,5 +54,7 @@ create table followed(
     foreign key (following) references users(id)
 );
 
-ALTER TABLE comments ADD COLUMN comment_date timestamp;
-ALTER TABLE comments ALTER COLUMN comment_date SET NOT NULL;
+DELETE FROM comments;
+DELETE FROM posts;
+UPDATE users SET total_posts = 0;
+ALTER TABLE posts ADD COLUMN compressed_url text not null;

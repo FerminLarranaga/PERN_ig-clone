@@ -85,7 +85,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
 
   const getPost = function () {
     setPostLoading(true);
-    console.log('GETTING POST');
+    // console.log('GETTING POST');
     fetch(`/posts/p/${postId}`, {
       method: 'GET',
       headers: { token: localStorage.token }
@@ -96,30 +96,32 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
         return
       }
       const postData = await res.json();
-      console.log(postData);
+      // console.log(postData);
       setPost(postData);
     }).finally(() => {
       setPostLoading(false);
     }).catch((e) => {
       console.error(e);
+      auth.loadMessageAlert(e.message, false);
     })
   }
 
   const getComments = function () {
     setCommentsLoading(true);
-    console.log('GETTING COMMENTS')
+    // console.log('GETTING COMMENTS')
 
     fetch(`/comments/${postId}`, {
       method: 'GET',
       headers: { token: localStorage.token }
     }).then(async res => {
       const comments = await res.json();
-      console.log(comments);
+      // console.log(comments);
       setPostCommentsAndData(comments);
     }).finally(() => {
       setCommentsLoading(false);
     }).catch((e) => {
       console.error(e);
+      auth.loadMessageAlert(e.message, false);
     })
   }
 

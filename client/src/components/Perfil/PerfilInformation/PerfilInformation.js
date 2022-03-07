@@ -101,9 +101,10 @@ function PerfilInformation() {
                 {/* AVATAR */}
                 <Avatar
                     src={user.profile_pic}
-                    className={`avatarContainer ${user.profile_pic && 'dim'}`}
+                    className={`avatarContainer ${user.profile_pic && 'avatarContainerActive'}`}
                     title={handleAvatarDivTitle()}
                     onClick={handleProfileImgBehaviour}
+                    style={{width: 150, height: 150}}
                 />
                 {
                     // Si el state para abrir el modal de cambiar foto de

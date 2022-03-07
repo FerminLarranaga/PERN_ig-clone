@@ -36,7 +36,7 @@
     pointer-events: none;
 }
 
-.changeAvatarImg_dialog::-webkit-scrollbar {
+/* .changeAvatarImg_dialog::-webkit-scrollbar {
   width: 10px;
 }
 
@@ -53,7 +53,7 @@
 
 .changeAvatarImg_dialog::-webkit-scrollbar-thumb:hover {
   background: rgba(17, 19, 37, 0.95);
-}
+} */
 
 .changeAvatarImg_dialogTitle {
   font-size: 18px;

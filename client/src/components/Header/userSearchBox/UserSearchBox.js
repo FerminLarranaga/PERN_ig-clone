@@ -75,7 +75,12 @@ export default function UserSearchBox() {
           <h4 className='userSearchBox_dropdownProfilesTitle'>Sugerencias</h4>
           {
             options.map(item => (
-              <Link key={item.username} to={`/${item.username}`} className='userSearchBox_dropdownProfile'>
+              <Link
+                key={item.username}
+                to={`/${item.username}`}
+                className='userSearchBox_dropdownProfile'
+                onClick={() => handleDropdown('none')}
+              >
                 <div className='suggests_userInfo' style={{justifyContent: 'space-between'}}>
                   <Avatar
                     className='suggests_userInfoAvatar'

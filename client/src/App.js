@@ -20,40 +20,38 @@ function App() {
       <div className="app">
         <BrowserRouter>
           <Routes>
-            <Route path='/register' element={<Register/>} />
-            <Route path='/login' element={<SignIn/>} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<SignIn />} />
 
-            <Route path='/:username' element={
-              <RequireAuthProfile>
-                <Header />
-                <div className='app__container'>
-                  <Perfil />
-                </div>
-              </RequireAuthProfile>
-            }/>
+            <Route path='/' element={<RequireAuth><Header /></RequireAuth>}>
+              <Route path=':username' element={
+                <RequireAuthProfile>
+                  <div className='app__container'>
+                    <Perfil />
+                  </div>
+                </RequireAuthProfile>
+              } />
 
-            <Route path='/accounts/edit' element={
-              <RequireAuth>
-                <Header />
-                <EditAccount/>
-              </RequireAuth>
-            } />
+              <Route path='accounts/edit' element={
+                <RequireAuth>
+                  <EditAccount />
+                </RequireAuth>
+              } />
 
-            <Route path='/explore/people' element={
-              <RequireAuth>
-                <Header />
-                <div className='feed_container'>
-                  <Suggests />
-                </div>
-              </RequireAuth>
-            } />
+              <Route path='explore/people' element={
+                <RequireAuth>
+                  <div className='feed_container'>
+                    <Suggests />
+                  </div>
+                </RequireAuth>
+              } />
 
-            <Route path='/' element={
-              <RequireAuth>
-                <Header />
-                <Feed />
-              </RequireAuth>
-            } />
+              <Route path='' element={
+                <RequireAuth>
+                  <Feed />
+                </RequireAuth>
+              } />
+            </Route>
 
           </Routes>
         </BrowserRouter>

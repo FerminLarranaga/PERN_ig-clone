@@ -32,7 +32,7 @@ function PerfilPosts() {
 
     useEffect(() => {
         setPosts([]);
-        console.log(`PerfilPosts's User: ${user.username}`);
+        // console.log(`PerfilPosts's User: ${user.username}`);
         fetch(`/posts/${user.username}`, {
             method: 'GET',
             headers: {token: localStorage.token}
@@ -44,6 +44,8 @@ function PerfilPosts() {
                 return
             }
             setPosts(await res.json());
+        }).catch((e) => {
+            console.log(e.message);
         })
         // eslint-disable-next-line
     }, [user.username]);
@@ -63,12 +65,12 @@ function PerfilPosts() {
     // }
 
     const getAllPosts = (posts) =>
-        posts.map(({ id, image_url, file_format, vid_duration }) => (
+        posts.map(({ id, compressed_url, image_url, file_format, vid_duration }) => (
             <div key={id} className='perfil__post'>
                 <div className="img_and_info" id={id} onClick={() => OpenPostFunc(id)}>
                     {
                         file_format === 'img' ? (
-                            <img alt="" src={image_url} className="perfil__image" /*onLoad={updatePostLoaded}*/ />
+                            <img alt="" src={compressed_url} className="perfil__image" /*onLoad={updatePostLoaded}*/ />
                         ) : (
                             <div className='img_and_info'>
                                 <video src={image_url + '#t=0.1'} className='perfil__image' /*onLoadedData={updatePostLoaded}*/ />

@@ -90,6 +90,14 @@ const FeedPosts = () => {
             method: 'GET',
             headers: { token: localStorage.token }
         }).then(async res => {
+            if (res.status === 404){
+                if (!memoiazedPosts.current.length){
+                    navigate('/explore/people');
+                    postsAreLoading.current = false;
+                    return
+                }
+            }
+
             if (!res.ok) {
                 const errorData = await res.json();
                 return console.error(errorData);
@@ -98,8 +106,8 @@ const FeedPosts = () => {
             const newPosts = await res.json();
             memoiazedPosts.current.push(...newPosts);
             setPosts([...memoiazedPosts.current]);
-            requestedPosts.current = requestedPosts.current + 3;
-            postsAreLoading.current = false
+            requestedPosts.current = requestedPosts.current + newPosts.length;
+            postsAreLoading.current = false;
         }).catch(err => {
             console.error(err);
             postsAreLoading.current = false
