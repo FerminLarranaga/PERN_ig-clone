@@ -32,9 +32,9 @@
     display: flex;
 }
 
-.feedPost_headerAvatar{
+/* .feedPost_headerAvatar{
 
-}
+} */
 
 .feedPost_headerInfo{
     display: flex;
@@ -69,8 +69,8 @@
     cursor: pointer;
 }
 
-.feedPost_content{
-}
+/* .feedPost_content{
+} */
 
 .feedPost_content > img, video{
     /* object-fit: cover; */

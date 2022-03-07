@@ -195,6 +195,7 @@ function PerfilInformation() {
                         closeDialog={() => setOpenStopFollowing(false)}
                         startLoading={() => setLoadingFollow(true)}
                         stopLoading={() => setLoadingFollow(false)}
+                        postsUser={false}
                     />
                 )
             }

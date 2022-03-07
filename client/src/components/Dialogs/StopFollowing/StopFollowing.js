@@ -37,7 +37,7 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading, postsUser, setI
                 total_followers: selectedUser.user.total_followers - 1,
                 isFollowing: false
             });
-            setIsFollowing(false);
+            setIsFollowing && setIsFollowing(false);
         }).catch(e => {
             adminUser.loadMessageAlert(e.message, false);
             console.error(e.message)
