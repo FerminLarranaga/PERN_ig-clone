@@ -15,20 +15,6 @@
     margin-bottom: 20px;
 }
 
-@media (max-width: 760px){
-    .username_and_btn{
-        flex-direction: column;
-    }
-
-    .username_and_btn > span{
-        padding-bottom: 10px;
-    }
-
-    .username_and_btn > div, a{
-        margin-left: 0 !important;
-    }
-}
-
 .p_f_f{
     display: flex;
     font-size: 16px;
@@ -86,19 +72,6 @@ ul{
     color: rgb(85, 85, 85);
 }
 
-@media (max-width: 760px) {
-    .followsInfo{
-        display: none;
-    }
-
-    .mobileTablet_followInfo{
-        display: flex !important;
-        justify-content: space-around;
-        padding-bottom: .5rem;
-        border-bottom: 1px solid rgb(155, 155, 155);
-    }
-}
-
 .addImg{
     position: relative;
     display: flex;
@@ -149,6 +122,7 @@ ul{
 
 .isFollowingBtn{
     padding: 6px 30px;
+    background: none;
 }
 
 .perfilInfo_loadingUnfollow{
@@ -157,4 +131,30 @@ ul{
     border-radius: 6px;
     display: flex;
     align-items: center;
+}
+
+@media (max-width: 735px) {
+    .followsInfo{
+        display: none;
+    }
+
+    .mobileTablet_followInfo{
+        display: flex !important;
+        justify-content: space-around;
+        padding-bottom: .5rem;
+        border-bottom: 1px solid rgb(155, 155, 155);
+    }
+
+    .username_and_btn{
+        flex-direction: column;
+    }
+
+    .username_and_btn > span{
+        padding-bottom: 10px;
+    }
+
+    .username_and_btn > div,
+    .username_and_btn > a{
+        margin-left: 0 !important;
+    }
 }

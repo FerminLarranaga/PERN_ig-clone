@@ -1,0 +1,11 @@
+.perfil{
+    max-width: 975px;
+    padding: 0 20px 0;
+    width: 100%;
+}
+
+@media (max-width: 735px) {
+    .perfil{
+        padding: 0;
+    }
+}

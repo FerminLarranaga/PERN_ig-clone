@@ -1,7 +1,8 @@
 .perfil_posts_container{
     display: flex;
+    gap: 28px;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .perfil__post{
@@ -12,13 +13,13 @@
     /* background: lightgray; */
 }
 
-@media (max-width: 960px) {
+/* @media (max-width: 960px) {
     .perfil__post{
         flex-basis: 32%;
     }
-}
+} */
 
-@media (max-width: 550px) {
+/* @media (max-width: 550px) {
     .perfil__post{
         flex-basis: 33%;
         margin: 0;
@@ -27,7 +28,7 @@
     .img_and_info{
         box-shadow: none !important;
     }
-}
+} */
   
 
 .img_and_info{
@@ -88,4 +89,10 @@
     align-items: center;
     justify-content: center;
     margin-left: 3px;
+}
+
+@media (max-width: 735px){
+    .perfil_posts_container{
+        gap: 3px;
+    }
 }

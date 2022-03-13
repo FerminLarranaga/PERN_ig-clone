@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Avatar } from "@material-ui/core";
-import DropdownList from 'react-widgets/lib/DropdownList';
 import 'react-widgets/dist/css/react-widgets.css';
 
 import './UserSearchBox.css';
@@ -54,13 +53,13 @@ export default function UserSearchBox() {
           onChange={handleQuery}
           className='userSearchBox_input'
           placeholder='Buscar'
-          onFocus={() => handleDropdown('block')}
+          onGotPointerCapture={() => handleDropdown('block')}
         />
         <div
           className='userSearchBox_dropdownExit'
           style={{ display: 'none' }}
           ref={dropdownExitRef}
-          onClick={() => handleDropdown('none')}
+          onGotPointerCapture={() => handleDropdown('none')}
         />
         {/* <svg ariaLabel="Buscar" class="_8-yf5 " color="#8e8e8e" fill="#8e8e8e" height="16" role="img" viewBox="0 0 24 24" width="16">
           <path d="M19 10.5A8.5 8.5 0 1110.5 2a8.5 8.5 0 018.5 8.5z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">

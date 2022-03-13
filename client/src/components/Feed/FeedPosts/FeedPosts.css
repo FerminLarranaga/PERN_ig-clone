@@ -1,7 +1,7 @@
 .feedPosts_masterContainer{
     width: 100%;
     max-width: 935px;
-    min-height: 200vh;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
 }
@@ -319,4 +319,11 @@
     margin: -2px 0 -3px;
     font-weight: 600;
     cursor: pointer;
+}
+
+@media (max-width: 650px){
+    .feedPost_postContainer{
+        border: none;
+        border-radius: 0px;
+    }
 }

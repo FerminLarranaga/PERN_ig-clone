@@ -1,17 +1,3 @@
-/* .rw-widget {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 10px;
-}
-
-@media (max-width: 500px){
-    .rw-popup-container{
-        min-width: 250px;
-        right: -25% !important;
-        left: -25% !important;
-    }
-} */
-
 .userSearchBox_container{
     height: 36px;
     width: 100%;
@@ -105,4 +91,18 @@
 
 .userSearchBox_dropdownProfile:hover{
     background-color: #fafafa;
+}
+
+@media (max-width: 540px) {
+    .userSearchBox_dropdown{
+        position: fixed;
+        width: 300px;
+        top: 60px;
+    }
+}
+
+@media (max-width: 650px){
+    .userSearchBox_container{
+        max-width: none;
+    }
 }

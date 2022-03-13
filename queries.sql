@@ -56,5 +56,7 @@ create table followed(
 
 DELETE FROM comments;
 DELETE FROM posts;
+DELETE FROM followed;
+DELETE FROM users;
 UPDATE users SET total_posts = 0;
 ALTER TABLE posts ADD COLUMN compressed_url text not null;

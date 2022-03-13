@@ -8,6 +8,12 @@
   background: rgba(116, 113, 113, 0.08);
 }
 
+@media (max-width: 735px){
+  #root{
+    background: #fafafa;
+  }
+}
+
 .app{
   min-height: 100vh;
   display: flex;
@@ -23,12 +29,13 @@
 }
 
 .app__container{
-  margin: 0 5%;
+  display: flex;
+  justify-content: center;
 }
 
-@media (max-width: 960px) {
+/* @media (max-width: 960px) {
   .app__container{
-    margin: 0 1%;
+    margin: 0 2.5%;
   }
 }
 
@@ -48,7 +55,7 @@
   .app__container{
     margin: 0 20%;
   }
-}
+} */
 
 /* width */
 /* .modalScrollbar::-webkit-scrollbar,

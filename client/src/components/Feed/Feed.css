@@ -5,3 +5,9 @@
     justify-content: center;
     margin-top: 30px;
 }
+
+@media (max-width: 650px){
+    .feed_container{
+        margin-top: 0;
+    }
+}

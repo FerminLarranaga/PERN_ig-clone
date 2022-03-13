@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import './EditAccount.css';
 import { useAuth } from '../../App';
 import { Avatar } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const EditAccount = () => {
     const auth = useAuth();
@@ -67,12 +68,14 @@ const EditAccount = () => {
         <div className='flex'>
             <div className='editAcc_container'>
                 <div className='editAcc_avatarContainer'>
-                    <Avatar
-                        src={auth.user.profile_pic}
-                        className='editAcc_avatar'
-                    />
+                    <Link to={`/${auth.user.username}`}>
+                        <Avatar
+                            src={auth.user.profile_pic}
+                            className='editAcc_avatar'
+                        />
+                    </Link>
                     <div className='editAcc_changeProfilePic'>
-                        <span>{auth.user.username}</span>
+                        <Link to={`/${auth.user.username}`}>{auth.user.username}</Link>
                         <button>Cambiar foto de perfil</button>
                     </div>
                 </div>

@@ -19,14 +19,21 @@
     height: 50px !important;
 }
 
+.editAcc_avatar:active{
+    opacity: .7;
+}
+
 .editAcc_changeProfilePic{
     margin-left: 35px;
 }
 
-.editAcc_changeProfilePic > span{
+.editAcc_changeProfilePic > a{
     display: block;
     font-size: 20px;
     margin-bottom: 5px;
+    text-decoration: none;
+    display: block;
+    color: #262626;
 }
 
 .editAcc_changeProfilePic > button{
@@ -35,6 +42,10 @@
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
+}
+
+.editAcc_changeProfilePic > a:active, button:active{
+    opacity: .7;
 }
 
 /*FORM*/
