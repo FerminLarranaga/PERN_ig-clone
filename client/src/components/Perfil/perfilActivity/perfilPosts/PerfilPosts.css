@@ -1,6 +1,6 @@
 .perfil_posts_container{
     display: flex;
-    gap: 28px;
+    /* gap: 28px; */
     flex-wrap: wrap;
     justify-content: flex-start;
 }
@@ -9,8 +9,20 @@
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    flex-basis: 30%;
+    flex-basis: 33.3333333%;
     /* background: lightgray; */
+}
+
+.perfil__post:nth-child(3n+3){
+    padding-left: 14px;
+}
+
+.perfil__post:nth-child(3n+2){
+    padding: 0 14px;
+}
+
+.perfil__post:nth-child(3n+1){
+    padding-right: 14px;
 }
 
 /* @media (max-width: 960px) {
@@ -92,7 +104,11 @@
 }
 
 @media (max-width: 735px){
-    .perfil_posts_container{
-        gap: 3px;
+    .perfil__post:nth-child(3n+3){
+        padding-left: 3px;
+    }
+    
+    .perfil__post:nth-child(3n+1){
+        padding-right: 3px;
     }
 }

@@ -79,6 +79,8 @@ export default function AddPost() {
 
     // Cerrar modal y resetear states
     const handleClose = () => {
+        if (progress) return
+
         setImg(null);
         setCompressedImg(null);
         compressedImgURL.current = '';
@@ -108,31 +110,31 @@ export default function AddPost() {
                 setImgFormat(fileFormat);
                 previewImg(evt);
                 if (fileFormat === 'img') {
-                    let newQuality;
-                    const fileSize = file.size / 1000000;
-                    switch(true){
-                        case (fileSize >= 5):
-                            newQuality = .2;
-                            break;
-                        case (fileSize >= 4):
-                            newQuality = .3;
-                            break;
-                        case (fileSize >= 3):
-                            newQuality = .4;
-                            break;
-                        case (fileSize >= 2):
-                            newQuality = .5;
-                            break;
-                        case (fileSize >= 1):
-                            newQuality = .6;
-                            break;
-                        default:
-                            newQuality = .8;
-                            break;
-                    }
+                    let newQuality = .65;
+                    // const fileSize = file.size / 1000000;
+                    // switch(true){
+                    //     case (fileSize >= 5):
+                    //         newQuality = .1;
+                    //         break;
+                    //     case (fileSize >= 4):
+                    //         newQuality = .2;
+                    //         break;
+                    //     case (fileSize >= 3):
+                    //         newQuality = .3;
+                    //         break;
+                    //     case (fileSize >= 2):
+                    //         newQuality = .4;
+                    //         break;
+                    //     case (fileSize >= 1):
+                    //         newQuality = .5;
+                    //         break;
+                    //     default:
+                    //         newQuality = .7;
+                    //         break;
+                    // }
                     new Compressor(file, {
                         quality: newQuality,
-                        maxWidth: 2500,
+                        maxWidth: 900,
                         resize: 'contain',
                         success: (compressedRes) => {
                             setImg(compressedRes)
@@ -140,9 +142,9 @@ export default function AddPost() {
                     });
 
                     new Compressor(file, {
-                        quality: .8,
-                        height: 500,
-                        width: 500,
+                        quality: .5,
+                        height: 400,
+                        width: 400,
                         resize: 'cover',
                         success: (compressedRes) => {
                             setCompressedImg(compressedRes);
@@ -283,7 +285,7 @@ export default function AddPost() {
                 aria-describedby="transition-modal-description"
                 className={classes.modal}
                 open={open}
-                onClose={!progress && handleClose}
+                onClose={handleClose}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{

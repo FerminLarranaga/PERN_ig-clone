@@ -128,7 +128,7 @@ function ChangeAvatarImg({ handleClose }) {
         // document.body.style = 'overflow: hidden;';
 
         return () => {
-            document.body.style = 'overflow: hidden; padding-right: 0px;';
+            document.body.style = 'overflow: auto; padding-right: 0px;';
             // document.body.style = 'overflow: auto;';
         }
     }, [])
