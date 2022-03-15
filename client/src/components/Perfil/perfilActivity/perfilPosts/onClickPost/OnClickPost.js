@@ -74,7 +74,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
           const errorData = await res.json();
           return auth.loadMessageAlert(errorData?.message, false);
         }
-        getComments();
+        getComments(postId);
         setComment('');
         evt.target.reset();
       }).catch(e => {
@@ -115,7 +115,7 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
       headers: { token: localStorage.token }
     }).then(async res => {
       const comments = await res.json();
-      // console.log(comments);
+      console.log(comments);
       setPostCommentsAndData(comments);
     }).finally(() => {
       setCommentsLoading(false);
