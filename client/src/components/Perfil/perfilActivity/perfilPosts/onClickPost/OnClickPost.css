@@ -32,7 +32,6 @@
 
 .post_users_section{
     width: 35%;
-    min-width: 340px;
     display: flex;
     flex-direction: column;
 }

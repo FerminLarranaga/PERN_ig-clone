@@ -35,11 +35,15 @@
 .userSearchBox_dropdown{
     position: absolute;
     width: 375px;
+    max-width: 375px;
     top: 50px;
     left: 50%;
+    max-height: 500px;
     transform: translate(-50%, 0);
     box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
     z-index: 2;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .userSearchBox_dropdownExit{
@@ -51,24 +55,35 @@
     z-index: -1;
 }
 
+.userSearchBox_dropdownSquareContainer{
+    width: 18px;
+    height: 9px;
+    overflow: hidden;
+    position: absolute;
+    padding-top: 2px;
+    left: calc(50% - 9px);
+    top: 42px;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+}
+
 .userSearchBox_dropdownSquare{
     width: 14px;
     height: 14px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255 255 255);
     border: 1px solid white;
     box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
-    position: absolute;
-    left: 50%;
-    top: -6px;
     transform: rotate(45deg);
-    z-index: -10;
+    z-index: 4;
 }
 
 .userSearchBox_dropdownProfiles{
     background-color: white;
     width: 100%;
-    border-radius: 6px;
     padding: 12px 16px;
+    max-height: 310px;
+    overflow-y: auto;
 }
 
 .userSearchBox_dropdownProfilesTitle{
@@ -82,7 +97,7 @@
 .userSearchBox_dropdownProfile{
     display: flex;
     align-items: center;
-    margin: 8px 0;
+    margin: 13px 0;
     background: none;
     cursor: pointer;
     text-align: left;
@@ -96,7 +111,7 @@
 @media (max-width: 540px) {
     .userSearchBox_dropdown{
         position: fixed;
-        width: 300px;
+        width: 90vw;
         top: 60px;
     }
 }

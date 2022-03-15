@@ -11,6 +11,7 @@ export default function UserSearchBox() {
   const [query, setQuery] = useState('');
   const dropdownRef = useRef();
   const dropdownExitRef = useRef();
+  const dropdownSquareRef = useRef();
 
   const getUsers = async () => {
     const res = await fetch('/getUsers', {
@@ -33,6 +34,7 @@ export default function UserSearchBox() {
 
   const handleDropdown = (display) => {
     dropdownRef.current.style.display = display;
+    dropdownSquareRef.current.style.display = display === 'block'? 'flex' : 'none';
     dropdownExitRef.current.style.display = display;
   }
 
@@ -63,8 +65,10 @@ export default function UserSearchBox() {
           </line>
         </svg> */}
       </div>
+      <div ref={dropdownSquareRef} className='userSearchBox_dropdownSquareContainer'>
+          <div className='userSearchBox_dropdownSquare' />
+      </div>
       <div className='userSearchBox_dropdown' style={{ display: 'none' }} ref={dropdownRef}>
-        <div className='userSearchBox_dropdownSquare' />
         <div className='userSearchBox_dropdownProfiles'>
           <h4 className='userSearchBox_dropdownProfilesTitle'>Sugerencias</h4>
           {

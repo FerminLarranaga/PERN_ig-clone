@@ -14,15 +14,15 @@
 }
 
 .perfil__post:nth-child(3n+3){
-    padding-left: 14px;
+    padding-left: 18.33333333px;
 }
 
 .perfil__post:nth-child(3n+2){
-    padding: 0 14px;
+    padding: 0 9.333333333px;
 }
 
 .perfil__post:nth-child(3n+1){
-    padding-right: 14px;
+    padding-right: 18.333333333px;
 }
 
 /* @media (max-width: 960px) {
@@ -105,10 +105,14 @@
 
 @media (max-width: 735px){
     .perfil__post:nth-child(3n+3){
-        padding-left: 3px;
+        padding-left: 2px;
+    }
+
+    .perfil__post:nth-child(3n+2){
+        padding: 0 1px;
     }
     
     .perfil__post:nth-child(3n+1){
-        padding-right: 3px;
+        padding-right: 2px;
     }
 }

@@ -134,44 +134,49 @@ function ChangeAvatarImg({ handleClose }) {
     }, [])
 
     return ReactDOM.createPortal(
-        <div className='changeAvatarImg_dialogContainer'>
-            <div onClick={handleClose} className='changeAvatarImg_BG' />
-            <div className={`changeAvatarImg_dialog ${progress && 'changeAvatarImg_dialogLoading'}`}>
-                <h1 className="changeAvatarImg_dialogTitle">Cambiar foto del perfil</h1>
-                {newProfilePhoto && <img alt={newProfilePhoto.name} src={imgPreviewSrc} className="imgPreview" />}
-                {
-                    progress > 0 && (
-                        <div className='uploading_files'>
-                            <BorderLinearProgress />
-                        </div>
-                    )
-                }
-                <div className='changeAvatarImg_btns'>
+        <div className='changeAvatarImg'>
+            <div onClick={() => !progress && handleClose()} className='changeAvatarImg_BG' />
+            <div className='changeAvatarImg_dialogContainer'>
+                <div className={`changeAvatarImg_dialog ${progress && 'changeAvatarImg_dialogLoading'}`}>
+                    <h1 className="changeAvatarImg_dialogTitle">Cambiar foto del perfil</h1>
+                    {newProfilePhoto && <img alt={newProfilePhoto.name} src={imgPreviewSrc} className="changeAvatarImg_imgPreview" />}
                     {
-                        newProfilePhoto && (
-                            // <button onClick={handleUpload} className='changeAvatarImg_uploadBtn'>
-                            //     <PublishIcon />
-                            // </button>
-                            <div className='changeAvatarImg_changeImgBtnContainer'>
-                                <button className="changeAvatarImg_changeImgBtn" onClick={handleUpload}>
-                                    Subir foto
-                                </button>
-                            </div>
+                        progress > 0 && (
+                            <>
+                                <div className='uploading_files'>
+                                    <BorderLinearProgress variant='indeterminate' value={progress} />
+                                </div>
+                                <div className='uploading_files_greyBack' />
+                            </>
                         )
                     }
-                    <div className='changeAvatarImg_changeImgBtnContainer'>
-                        <label className="changeAvatarImg_changeImgBtn">
-                            <input type="file" accept='image/*' className="file-input" onChange={handleImg} />
-                            {/* SI YA SE SELECCIONO IMG, CAMBIAR LABEL DEL BOTON */}
-                            {newProfilePhoto ? (
-                                'Cambiar archivo'
-                            ) : (
-                                'Subir foto'
-                            )}
-                        </label>
+                    <div className='changeAvatarImg_btns'>
+                        {
+                            newProfilePhoto && (
+                                // <button onClick={handleUpload} className='changeAvatarImg_uploadBtn'>
+                                //     <PublishIcon />
+                                // </button>
+                                <div className='changeAvatarImg_changeImgBtnContainer'>
+                                    <button className="changeAvatarImg_changeImgBtn" onClick={handleUpload}>
+                                        Subir foto
+                                    </button>
+                                </div>
+                            )
+                        }
+                        <div className='changeAvatarImg_changeImgBtnContainer'>
+                            <label className="changeAvatarImg_changeImgBtn">
+                                <input type="file" accept='image/*' className="file-input" onChange={handleImg} />
+                                {/* SI YA SE SELECCIONO IMG, CAMBIAR LABEL DEL BOTON */}
+                                {newProfilePhoto ? (
+                                    'Cambiar archivo'
+                                ) : (
+                                    'Subir foto'
+                                )}
+                            </label>
+                        </div>
+                        <button onClick={deletePhoto} className='changeAvatarImg_deleteCurrentBtn'>Eliminar foto actual</button>
+                        <button onClick={handleClose} className='changeAvatarImg_cancelBtn'>Cancelar</button>
                     </div>
-                    <button onClick={deletePhoto} className='changeAvatarImg_deleteCurrentBtn'>Eliminar foto actual</button>
-                    <button onClick={handleClose} className='changeAvatarImg_cancelBtn'>Cancelar</button>
                 </div>
             </div>
         </div>,
