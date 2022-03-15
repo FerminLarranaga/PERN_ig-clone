@@ -8,7 +8,7 @@
 .perfil__post{
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 27.6666666666px;
     flex-basis: 33.3333333%;
     /* background: lightgray; */
 }
@@ -104,6 +104,10 @@
 }
 
 @media (max-width: 735px){
+    .perfil__post{
+        margin-bottom: 3px;
+    }
+
     .perfil__post:nth-child(3n+3){
         padding-left: 2px;
     }

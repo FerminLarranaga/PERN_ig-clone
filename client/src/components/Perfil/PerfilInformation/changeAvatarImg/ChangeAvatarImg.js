@@ -124,11 +124,11 @@ function ChangeAvatarImg({ handleClose }) {
     }
 
     useEffect(() => {
-        document.body.style = 'overflow: hidden; padding-right: 17px;';
+        document.body.classList.add('scrollbar-grey');
         // document.body.style = 'overflow: hidden;';
 
         return () => {
-            document.body.style = 'overflow: auto; padding-right: 0px;';
+            document.body.classList.remove('scrollbar-grey');
             // document.body.style = 'overflow: auto;';
         }
     }, [])

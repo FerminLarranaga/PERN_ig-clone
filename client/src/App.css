@@ -102,3 +102,11 @@ html::-webkit-scrollbar-thumb{
 html::-webkit-scrollbar-thumb:hover{
   background: rgba(17, 19, 37, .95);
 } */
+
+.scrollbar-grey::-webkit-scrollbar{
+  width: 17px;
+}
+
+.scrollbar-grey::-webkit-scrollbar-track{
+  background: rgb(61 61 61);
+}

@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { storage } from '../../../firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-// import PostAddIcon from '@material-ui/icons/PostAdd';
 import Compressor from 'compressorjs';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -54,6 +53,7 @@ export default function AddPost() {
     const navigate = useNavigate();
     const query = useQuery();
     const auth = useAuth();
+    const location = useLocation()
 
     const [img, setImg] = useState(null); // Imagen seleccionada a subir
     const [compressedImg, setCompressedImg] = useState(null); // Thumbnail
@@ -81,13 +81,13 @@ export default function AddPost() {
     const handleClose = () => {
         if (progress) return
 
+        navigate(location.pathname);
         setImg(null);
         setCompressedImg(null);
         compressedImgURL.current = '';
         setImgPreviewSrc('');
         setCaption('');
         setProgress(0);
-        navigate(-1);
     };
 
     // Obtener src de la imagen para mostart preview
@@ -228,7 +228,6 @@ export default function AddPost() {
                         const errorData = await res.json();
                         console.log(errorData.message);
                     }
-                    // auth.setUser({...auth.user, total_posts: auth.user.total_posts + 1});
                     auth.autoLoginUser();
                     handleClose();
                     auth.loadMessageAlert('Successfuly uploaded post', true);
@@ -265,11 +264,6 @@ export default function AddPost() {
 
     return (
         <div>
-            {/* Icono de posteo */}
-            {/* <PostAddIcon
-                fontSize="large"
-                className="pointer dim"
-                onClick={handleOpen} /> */}
             <div style={{ height: '24px' }} className='header__svgBtn' onClick={handleOpen}>
                 <svg aria-label="Nueva publicación" className="_8-yf5 " color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24">
                     <path d="M2 12v3.45c0 2.849.698 4.005 1.606 4.944.94.909 2.098 1.608 4.946 1.608h6.896c2.848 0 4.006-.7 4.946-1.608C21.302 19.455 22 18.3 22 15.45V8.552c0-2.849-.698-4.006-1.606-4.945C19.454 2.7 18.296 2 15.448 2H8.552c-2.848 0-4.006.699-4.946 1.607C2.698 4.547 2 5.703 2 8.552z" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
@@ -364,8 +358,6 @@ export default function AddPost() {
                                             </div>
                                         )}
                                     </div>
-
-                                    {/* {img ? (<h5>Tamaño: {Math.trunc(img?.size / 1000) + ' kb'}</h5>) : ''} */}
                                 </div>
                             </div>
                         </div>

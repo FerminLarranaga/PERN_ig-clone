@@ -47,7 +47,7 @@
 }
 
 .addPostModal_selectSection{
-    padding: 24px;
+    padding: 24px 24px 14px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -96,12 +96,12 @@
 
 .captionContainer > textarea{
     overflow: visible !important;
-    border: 1px solid #dbdbdb;
+    border: 1px solid #bbbbbb;
     padding: 10px;
 }
 
-.captionContainer > textarea:focus{
-    border: 1px solid #dbdbdd !important;
+.captionContainer > textarea:focus-visible{
+    outline: none;
 }
 
 .caption{

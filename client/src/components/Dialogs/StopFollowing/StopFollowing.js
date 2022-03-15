@@ -47,10 +47,10 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading, postsUser, setI
     }
 
     useEffect(() => {
-        document.body.style = 'overflow: hidden; margin-right: 17px;';
+        document.body.classList.add('scrollbar-grey');
 
         return () => {
-            document.body.style = 'overflow: auto; margin-right: 0;';
+            document.body.classList.remove('scrollbar-grey');
         }
     }, [])
 
