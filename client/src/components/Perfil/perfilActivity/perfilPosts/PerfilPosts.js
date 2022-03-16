@@ -21,13 +21,15 @@ function PerfilPosts() {
     const navigate = useNavigate();
     const query = useQuery();
     const selectedUser = useSelectedUser().user;
-    const adminUser = useAuth().user;
-    const user = selectedUser ? selectedUser : adminUser;
+    // const adminUser = useAuth().user;
+    // const user = selectedUser ? selectedUser : adminUser;
     const params = useParams();
 
     useEffect(() => {
         if (query.get("postId")) {
             setOpenPost(true);
+        } else {
+            setOpenPost(false);
         }
     }, [query])
 

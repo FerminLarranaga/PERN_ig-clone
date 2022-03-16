@@ -173,7 +173,7 @@ const FeedPosts = () => {
                             <div className='feedPost_content'>
                                 {
                                     post.file_format === 'img' ? (
-                                        <img alt='' src={post.image_url} />
+                                        <img alt='' src={post.image_url} onLoad={(evt) => {evt.target.classList.remove('feedPost_imgLoading')}} className='feedPost_imgLoading'/>
                                     ) : (
                                         <video controls autoPlay muted src={post.image_url} />
                                     )

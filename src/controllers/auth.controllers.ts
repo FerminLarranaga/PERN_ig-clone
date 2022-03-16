@@ -125,9 +125,17 @@ const getUsers: RequestHandler = async (req, res, next) => {
 
   try {
     const res2 = await pool.query(
-      "SELECT username, profile_pic, full_name FROM users WHERE id != $1 LIMIT $2 OFFSET $3",
+      "SELECT username, profile_pic, full_name, follower FROM users LEFT JOIN followed ON users.id = followed.following AND $1 = followed.follower WHERE users.id != $1 ORDER BY total_posts DESC, total_followers DESC LIMIT $2 OFFSET $3",
       [user_id, amount, offset]
     );
+
+    res2.rows.forEach((item, index) => {
+      if (item.follower){
+        item.isFollowing = true;
+        delete item.follower
+        res2.rows.push(res2.rows.splice(index, 1)[0]);
+      }
+    })
 
     res.json(res2.rows);
   } catch (error) {

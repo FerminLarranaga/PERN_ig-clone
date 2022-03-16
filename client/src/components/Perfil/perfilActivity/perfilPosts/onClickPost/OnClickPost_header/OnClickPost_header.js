@@ -81,9 +81,7 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                         if (isBeingFollowed) {
                             return (
                                 <Fragment>
-                                    <div className='dot_div'>
-                                        <FiberManualRecordIcon style={{ width: 5, height: 5 }} />
-                                    </div>
+                                    <div className='dot_div'>{'•'}</div>
                                     <div onClick={() => setOpenStopFollowing(true)} className='fw6 pa2 pl0 pointer postHeader_startFollowingBtn'>
                                         <span>Siguiendo</span>
                                     </div>

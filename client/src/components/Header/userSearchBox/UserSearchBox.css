@@ -97,7 +97,7 @@
 .userSearchBox_dropdownProfile{
     display: flex;
     align-items: center;
-    margin: 13px 0;
+    padding: 6.5px 0;
     background: none;
     cursor: pointer;
     text-align: left;

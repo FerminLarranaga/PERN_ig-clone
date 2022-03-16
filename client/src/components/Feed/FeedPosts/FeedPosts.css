@@ -73,8 +73,13 @@
 } */
 
 .feedPost_content > img, video{
-    /* object-fit: cover; */
+    object-fit: contain;
     width: 100%;
+}
+
+.feedPost_imgLoading{
+    background: rgb(189, 189, 189);
+    height: 400px;
 }
 
 .feedPost_bottomBtns{
@@ -322,6 +327,10 @@
 }
 
 @media (max-width: 650px){
+    .feedPosts_container{
+        width: 100%;
+    }
+
     .feedPost_postContainer{
         border: none;
         border-radius: 0px;

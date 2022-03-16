@@ -17,11 +17,13 @@
     border-radius: 4px;
     border: 1px solid #dbdbdb;
     background: #fff;
+    margin-bottom: 40px;
 }
 
 .suggests_user{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 20px;
 }
 
@@ -94,7 +96,7 @@
 
 @media (max-width: 650px){
     .suggests_containerTitle{
-        margin: 20px;
+        margin: 20px 20px 5px;
     }
 
     .suggests_section{

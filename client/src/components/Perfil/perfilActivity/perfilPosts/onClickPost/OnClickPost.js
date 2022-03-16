@@ -136,134 +136,132 @@ export default function OnClickPost({ open, setOpen, postId, isAdmin, isFollowin
   }, [postId]);
 
   return (
-    post && (
-      <div>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <div className={classes.paper + ' openedPost_container'}>
-              <div className='backBtn__cellphone'>
-                <svg onClick={handleClose} aria-label="Volver" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24">
-                  <path d="M21 17.502a.997.997 0 01-.707-.293L12 8.913l-8.293 8.296a1 1 0 11-1.414-1.414l9-9.004a1.03 1.03 0 011.414 0l9 9.004A1 1 0 0121 17.502z">
-                  </path>
-                </svg>
-                <h1>
-                  {
-                    post.file_format === 'img'? 'Foto' : 'Video'
-                  }
-                </h1>
+    <div>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper + ' openedPost_container'}>
+            <div className='backBtn__cellphone'>
+              <svg onClick={handleClose} aria-label="Volver" color="#262626" fill="#262626" height="24" role="img" viewBox="0 0 24 24" width="24">
+                <path d="M21 17.502a.997.997 0 01-.707-.293L12 8.913l-8.293 8.296a1 1 0 11-1.414-1.414l9-9.004a1.03 1.03 0 011.414 0l9 9.004A1 1 0 0121 17.502z">
+                </path>
+              </svg>
+              <h1>
+                {
+                  post?.file_format === 'vid' ? 'Video' : 'Foto'
+                }
+              </h1>
+            </div>
+            <OnClickPost_header
+              deviceClassName='tabletPostHeader'
+              profilePhoto={post?.profile_pic}
+              username={post?.username}
+              isAdmin={isAdmin}
+              isFollowing={isFollowing}
+              postsUser={postsUser}
+            />
+            <div className='postImg_and_comments_container'>
+              <div className='img_div'>
+                {
+                  post?.file_format === 'vid' ? (
+                    <video key={post?.image_url} controls src={post?.image_url} preload='auto' className='img_post' onCanPlayThrough={(evt) => console.log('CANPLAYTHROUGH >>> ', evt)} />                    
+                  ) : (
+                    <img key={post?.image_url} alt='' src={post?.image_url} onLoad={(evt) => { evt.target.classList.remove('img_postLoading') }} className='img_post img_postLoading' />
+                  )
+                }
               </div>
-              <OnClickPost_header
-                deviceClassName='tabletPostHeader'
-                profilePhoto={post.profile_pic}
-                username={post.username}
-                isAdmin={isAdmin}
-                isFollowing={isFollowing}
-                postsUser={postsUser}
-              />
-              <div className='postImg_and_comments_container'>
-                <div className='img_div'>
+              <div className='post_users_section'>
+                <OnClickPost_header
+                  deviceClassName='computerPostHeader'
+                  profilePhoto={post?.profile_pic}
+                  username={post?.username}
+                  isAdmin={isAdmin}
+                  isFollowing={isFollowing}
+                  postsUser={postsUser}
+                />
+                <div className='comment_section' style={{ overflow: commentsLoading ? 'hidden' : '' }}>
                   {
-                    post.file_format === 'img' ? (
-                      <img key={post.image_url} alt='' src={post.image_url} className='img_post' />
-                    ) : (
-                      <video key={post.image_url} controls src={post.image_url} preload='auto' className='img_post' onCanPlayThrough={(evt) => console.log('CANPLAYTHROUGH >>> ', evt)} />
+                    post?.caption && (
+                      <div className='first_comment'>
+                        <Comment comment={post.caption} username={post.username} profilePhoto={post.profile_pic} />
+                      </div>
                     )
                   }
-                </div>
-                <div className='post_users_section'>
-                  <OnClickPost_header
-                    deviceClassName='computerPostHeader'
-                    profilePhoto={post.profile_pic}
-                    username={post.username}
-                    isAdmin={isAdmin}
-                    isFollowing={isFollowing}
-                    postsUser={postsUser}
-                  />
-                  <div className='comment_section' style={{ overflow: commentsLoading ? 'hidden' : '' }}>
-                    {
-                      post.caption && (
-                        <div className='first_comment'>
-                          <Comment comment={post.caption} username={post.username} profilePhoto={post.profile_pic} />
-                        </div>
-                      )
-                    }
-                    {
-                      function () {
-                        if (!commentsLoading) {
-                          return (
-                            <div>
-                              {
-                                postCommentsAndData.map(dataComment => {
-                                  return <Comment key={dataComment.id} comment={dataComment.comment} username={dataComment.username} profilePhoto={dataComment.profile_pic} />
-                                })
-                              }
-                            </div>
-                          )
-                        } else {
-                          let loadingComments = [];
-                          for (let i = 0; i < 10; i++) {
-                            loadingComments.push(
-                              <div key={i} className='post_comment'>
-                                <span className='loading_comment_avatar'></span>
-                                <div className='loading_comment_caption'>
-                                  <div style={{ display: 'flex', width: '100%' }}>
-                                    <span className='loading_comment_username'></span>
-                                    <span className='loading_comment_txt1'></span>
-                                  </div>
-                                  <span style={{ marginLeft: '0px', marginTop: '5px' }} className='loading_comment_txt1'></span>
+                  {
+                    function () {
+                      if (!commentsLoading) {
+                        return (
+                          <div>
+                            {
+                              postCommentsAndData.map(dataComment => {
+                                return <Comment key={dataComment.id} comment={dataComment.comment} username={dataComment.username} profilePhoto={dataComment.profile_pic} />
+                              })
+                            }
+                          </div>
+                        )
+                      } else {
+                        let loadingComments = [];
+                        for (let i = 0; i < 10; i++) {
+                          loadingComments.push(
+                            <div key={i} className='post_comment'>
+                              <span className='loading_comment_avatar'></span>
+                              <div className='loading_comment_caption'>
+                                <div style={{ display: 'flex', width: '100%' }}>
+                                  <span className='loading_comment_username'></span>
+                                  <span className='loading_comment_txt1'></span>
                                 </div>
+                                <span style={{ marginLeft: '0px', marginTop: '5px' }} className='loading_comment_txt1'></span>
                               </div>
-                            );
-                          }
-                          return (
-                            <div>
-                              {
-                                loadingComments.map(loadingComment => loadingComment)
-                              }
                             </div>
-                          )
+                          );
                         }
-                      }()
-                    }
-                  </div>
-                  <section style={{ width: '100%' }} className='feedPost_bottomAddComment'>
-                    <form onSubmit={evt => handlePostComment(evt)} className='feedPost_bottomAddCommentForm'>
-                      <textarea
-                        type='text'
-                        placeholder='Agrega un comentario...'
-                        className='feedPost_bottomAddCommentInput'
-                        autoComplete='off'
-                        autoCorrect='off'
-                        autoCapitalize='off'
-                        onChange={changeCommentHandler}
-                      />
-                      <button type='submit' className='feedPost_bottomAddCommentPublish' disabled>Publicar</button>
-                    </form>
-                    {
-                      false && (
-                        <div className='feedPost_loadingNewComment'>
-                          <CircularProgress style={{ width: '25px', height: '25px' }} />
-                        </div>
-                      )
-                    }
-                  </section>
+                        return (
+                          <div>
+                            {
+                              loadingComments.map(loadingComment => loadingComment)
+                            }
+                          </div>
+                        )
+                      }
+                    }()
+                  }
                 </div>
+                <section style={{ width: '100%' }} className='feedPost_bottomAddComment'>
+                  <form onSubmit={evt => handlePostComment(evt)} className='feedPost_bottomAddCommentForm'>
+                    <textarea
+                      type='text'
+                      placeholder='Agrega un comentario...'
+                      className='feedPost_bottomAddCommentInput'
+                      autoComplete='off'
+                      autoCorrect='off'
+                      autoCapitalize='off'
+                      onChange={changeCommentHandler}
+                    />
+                    <button type='submit' className='feedPost_bottomAddCommentPublish' disabled>Publicar</button>
+                  </form>
+                  {
+                    false && (
+                      <div className='feedPost_loadingNewComment'>
+                        <CircularProgress style={{ width: '25px', height: '25px' }} />
+                      </div>
+                    )
+                  }
+                </section>
               </div>
             </div>
-          </Fade>
-        </Modal>
-      </div>
-    )
+          </div>
+        </Fade>
+      </Modal>
+    </div>
   );
 }

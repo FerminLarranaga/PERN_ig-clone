@@ -4,7 +4,7 @@ import { Avatar } from "@material-ui/core";
 import 'react-widgets/dist/css/react-widgets.css';
 
 import './UserSearchBox.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function UserSearchBox() {
   const [options, setOptions] = useState([]);
@@ -87,7 +87,7 @@ export default function UserSearchBox() {
                   />
                   <div className='suggests_userInfoTxt'>
                     <span className='suggests_userUsername'>{item.username}</span>
-                    <span className='suggests_userFullName'>{item.full_name}</span>
+                    <span className='suggests_userFullName'>{item.full_name}{item.isFollowing && ' • Seguido'}</span>
                   </div>
                 </div>
                 {/* <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button> */}
