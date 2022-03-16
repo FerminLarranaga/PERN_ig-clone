@@ -62,7 +62,7 @@ const StopFollowing = ({ closeDialog, startLoading, stopLoading, postsUser, setI
                     className='stopFollowing_avatar'
                     src={selectedUser.user.profile_pic}
                 />
-                <p className='stopFollowing_txt'>If you change your mind, you'll have to request to follow @{selectedUser.user.username} {' again'}</p>
+                <p className='stopFollowing_txt'>¿Dejar de seguir a @{selectedUser.user.username}?</p>
                 <div className='stopFollowing_btns'>
                     <button onClick={handleFollowing} className='stopFollowing_unfollowBtn'>Unfollow</button>
                     <button onClick={closeDialog} className='stopFollowing_cancelBtn'>Cancel</button>

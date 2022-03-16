@@ -12,6 +12,7 @@ import Fade from '@material-ui/core/Fade';
 import { TextareaAutosize, LinearProgress } from '@material-ui/core';
 
 import "./AddPost.css";
+import delay from '../../../util/delay';
 
 // Estilos del modal
 const useStyles = makeStyles((theme) => ({
@@ -78,10 +79,12 @@ export default function AddPost() {
     };
 
     // Cerrar modal y resetear states
-    const handleClose = () => {
+    const handleClose = async () => {
         if (progress) return
 
+        setOpen(false);
         navigate(location.pathname);
+        await delay(500);
         setImg(null);
         setCompressedImg(null);
         compressedImgURL.current = '';

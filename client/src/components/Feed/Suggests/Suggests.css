@@ -69,7 +69,7 @@
 }
 
 .suggests_followBtn{
-    background-color: #0095f6;
+    background: #0095f6;
     color: white;
     border: none;
     padding: 6px 11px;
@@ -78,4 +78,32 @@
     cursor: pointer;
     font-size: 14px;
     border-radius: 4px;
+}
+
+.suggests_followingBtn{
+    border: 1px solid #dbdbdb;
+    padding: 6px 11px;
+    font-weight: 600;
+    height: fit-content;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #262626;
+    background: transparent;
+}
+
+@media (max-width: 650px){
+    .suggests_containerTitle{
+        margin: 20px;
+    }
+
+    .suggests_section{
+        border-radius: none;
+        border: none;
+        background: none;
+    }
+
+    .suggests_container{
+        padding: 0;
+    }
 }

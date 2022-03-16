@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes";
 import postsRoutes from "./routes/posts.routes";
 import commentsRoutes from "./routes/comments.routes";
 import followingRoutes from "./routes/following.routes";
+import recommendedRoutes from './routes/recommended.routes';
 import path from "path";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/", authRoutes);
 app.use("/posts", postsRoutes);
 app.use("/comments", commentsRoutes);
 app.use("/", followingRoutes);
+app.use('/', recommendedRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(400).json({ message: err.message });

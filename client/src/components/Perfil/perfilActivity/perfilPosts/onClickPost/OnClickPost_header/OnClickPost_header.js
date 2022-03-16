@@ -38,7 +38,7 @@ const OnClickPost_header = ({ deviceClassName, username, profilePhoto, isAdmin, 
                 setIsBeingFollowed(true);
                 return
             }
-            console.group('HI')
+            
             adminUser.setUser({ ...adminUser.user, total_followed: adminUser.user.total_followed + 1 });
             selectedUser.setUser({
                 ...selectedUser.user,
