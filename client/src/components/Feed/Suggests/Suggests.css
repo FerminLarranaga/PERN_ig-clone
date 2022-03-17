@@ -80,6 +80,7 @@
     cursor: pointer;
     font-size: 14px;
     border-radius: 4px;
+    position: relative;
 }
 
 .suggests_followingBtn{
@@ -92,6 +93,46 @@
     border-radius: 4px;
     color: #262626;
     background: transparent;
+    position: relative;
+}
+
+.suggests_loadingFollowMasterContainer{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 105%;
+    height: 105%;
+    background: rgba(255, 255, 255, 0.562);
+    border-radius: 4px;
+}
+
+.suggests_loadingFollowContainer{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.suggests_loadingFollow{
+    width: 100%;
+    height: 100%;
+    border: 3px solid black;
+    border-radius: 50%;
+    border-left: 3px solid transparent;
+    animation: ggh .5s linear infinite;
+}
+
+@keyframes ggh {
+    0%{
+        transform: rotateZ(0deg);
+    }
+
+    100%{
+        transform: rotateZ(360deg);
+    }
 }
 
 @media (max-width: 650px){

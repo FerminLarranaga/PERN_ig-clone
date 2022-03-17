@@ -7,10 +7,9 @@ const signin: RequestHandler = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const res2 = await pool.query(
-      "SELECT * FROM users where username = $1",
-      [username]
-    );
+    const res2 = await pool.query("SELECT * FROM users where username = $1", [
+      username,
+    ]);
 
     if (res2.rows.length === 0) {
       return res.status(404).json("User not found");
@@ -29,8 +28,8 @@ const signin: RequestHandler = async (req, res, next) => {
       web_site: res2.rows[0].web_site,
       total_posts: res2.rows[0].total_posts,
       total_followers: res2.rows[0].total_followers,
-      total_followed: res2.rows[0].total_followed
-    }
+      total_followed: res2.rows[0].total_followed,
+    };
 
     res.json(userData);
   } catch (error) {
@@ -56,8 +55,8 @@ const register: RequestHandler = async (req, res, next) => {
       description: res2.rows[0].description,
       total_posts: res2.rows[0].total_posts,
       total_followers: res2.rows[0].total_followers,
-      total_followed: res2.rows[0].total_followed
-    }
+      total_followed: res2.rows[0].total_followed,
+    };
 
     res.json(userData);
   } catch (error) {
@@ -109,9 +108,11 @@ const getSelectedUserData: RequestHandler = async (req, res, next) => {
       [user_id, userData.id]
     );
 
-    isFollowing.rows.length === 0? userData.isFollowing = false : userData.isFollowing = true;
+    isFollowing.rows.length === 0
+      ? (userData.isFollowing = false)
+      : (userData.isFollowing = true);
 
-    userData.id = '';
+    userData.id = "";
 
     res.json(userData);
   } catch (error) {
@@ -121,23 +122,35 @@ const getSelectedUserData: RequestHandler = async (req, res, next) => {
 
 const getUsers: RequestHandler = async (req, res, next) => {
   const { user_id } = req.body;
-  const { amount, offset } = req.query;
+  const { limit, offset } = req.query;
 
   try {
-    const res2 = await pool.query(
-      "SELECT username, profile_pic, full_name, follower FROM users LEFT JOIN followed ON users.id = followed.following AND $1 = followed.follower WHERE users.id != $1 ORDER BY total_posts DESC, total_followers DESC LIMIT $2 OFFSET $3",
-      [user_id, amount, offset]
+    // ARREGLAR PARA QUE GETUSERS DIGA SI LO SEGUIMOS O NO
+    const followedUsernames = await pool.query(
+      'SELECT username FROM users LEFT JOIN followed ON users.id = followed.following WHERE followed.follower = $1',
+      [user_id]
     );
 
-    res2.rows.forEach((item, index) => {
-      if (item.follower){
-        item.isFollowing = true;
-        delete item.follower
-        res2.rows.push(res2.rows.splice(index, 1)[0]);
-      }
-    })
+    const res2 = await pool.query(
+      "SELECT username, profile_pic, full_name FROM users WHERE users.id != $1 ORDER BY total_posts DESC, total_followers DESC LIMIT $2 OFFSET $3",
+      [user_id, limit, offset]
+    );
 
-    res.json(res2.rows);
+    const users = [...res2.rows];
+
+    res2.rows.forEach((item, index) => {
+      const checkUsername = (username: string) => {
+        const hasUsername = followedUsernames.rows.filter(item => item.username === username);
+        return hasUsername.length > 0
+      }
+
+      if (checkUsername(item.username)) {
+        item.isFollowing = true;
+        users.push(users.splice(users.indexOf(item), 1)[0]);
+      }
+    });
+
+    res.json(users);
   } catch (error) {
     next(error);
   }
@@ -161,7 +174,15 @@ const updateUserPhoto: RequestHandler = async (req, res, next) => {
 const updateUser: RequestHandler = async (req, res, next) => {
   const { user_id, full_name, username, description, web_site } = req.body;
 
-  const iswebSiteValid = !Boolean(web_site) || Boolean(web_site.match(new RegExp(/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi)));
+  const iswebSiteValid =
+    !Boolean(web_site) ||
+    Boolean(
+      web_site.match(
+        new RegExp(
+          /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+        )
+      )
+    );
   const isUsernameValid = username.length > 4 && username.length < 35;
   const isFullNameValid = full_name.length > 4 && full_name.length < 35;
   const isDescriptionValid = !Boolean(description) || description.length < 255;
@@ -170,14 +191,14 @@ const updateUser: RequestHandler = async (req, res, next) => {
     full_name: isFullNameValid,
     username: isUsernameValid,
     web_site: iswebSiteValid,
-    description: isDescriptionValid
+    description: isDescriptionValid,
   };
 
-if (!(Object.values(isInfoValid).every(Boolean))) return
+  if (!Object.values(isInfoValid).every(Boolean)) return;
 
   try {
     const res2 = await pool.query(
-      'UPDATE users SET (full_name, username, description, web_site) = ($1, $2, $3, $4) WHERE id = $5',
+      "UPDATE users SET (full_name, username, description, web_site) = ($1, $2, $3, $4) WHERE id = $5",
       [full_name, username, description, web_site, user_id]
     );
 
@@ -185,7 +206,7 @@ if (!(Object.values(isInfoValid).every(Boolean))) return
   } catch (error) {
     next(error);
   }
-}
+};
 
 export {
   signin,
@@ -195,5 +216,5 @@ export {
   getUsers,
   updateUserPhoto,
   getSelectedUserData,
-  updateUser
+  updateUser,
 };

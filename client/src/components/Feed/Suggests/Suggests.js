@@ -10,8 +10,7 @@ const Suggests = () => {
     const [openStopFollowing, setOpenStopFollowing] = useState({
         open: false,
         username: '',
-        profile_pic: '',
-        success: () => {}
+        profile_pic: ''
     });
     const adminUser = useAuth()
 
@@ -33,7 +32,11 @@ const Suggests = () => {
         const {isFollowing, username, profile_pic} = item;
 
         if (!isFollowing){
-            evt.target.style.background = 'black'
+            const spinningDiv = document.createElement('div');
+            spinningDiv.classList.add('suggests_loadingFollowMasterContainer');
+            spinningDiv.innerHTML = "<div class='suggests_loadingFollowContainer'><div class='suggests_loadingFollow'/></div>";
+            evt.target.appendChild(spinningDiv);
+
             fetch('/startFollowing', {
                 method: 'POST',
                 headers: {
@@ -50,13 +53,14 @@ const Suggests = () => {
                 adminUser.setUser({ ...adminUser.user, total_followed: adminUser.user.total_followed + 1 });
                 
                 item.isFollowing = true;
-                evt.target.classList.remove('suggests_followBtn')
-                evt.target.classList.add('suggests_followingBtn')
+                console.log(evt);
+                evt.target.classList.remove("suggests_followBtn");
+                evt.target.classList.add("suggests_followingBtn");
                 evt.target.innerText = 'Siguiendo'
             }).catch(e => console.error(e.message)).finally(() => {
                 // setLoadingFollow(false);
             }).finally(() => {
-                evt.target.style.background = 'transparent'
+                // evt.target.style.background = 'transparent'
             });
         } else {
             setOpenStopFollowing({
@@ -71,11 +75,16 @@ const Suggests = () => {
                     adminUser.setUser({ ...adminUser.user, total_followed: adminUser.user.total_followed - 1 });
                 },
                 onloading: () => {
-                    evt.target.style.background = 'black'
+                    const spinningDiv = document.createElement('div');
+                    spinningDiv.classList.add('suggests_loadingFollowMasterContainer');
+                    spinningDiv.innerHTML = "<div class='suggests_loadingFollowContainer'><div class='suggests_loadingFollow'/></div>";
+                    evt.target.appendChild(spinningDiv);
                 },
 
                 stoploading: () => {
-                    evt.target.style.background = '#0095f6'
+                    evt.target.classList.add("suggests_followBtn");
+                    evt.target.classList.remove("suggests_followingBtn");
+                    evt.target.innerText = 'Seguir'
                 }
             })
         }
@@ -110,9 +119,9 @@ const Suggests = () => {
                             </div>
                             <button
                                 onClick={(evt) => {handleFollowing(evt, item)}}
-                                className={item.isFollowing? "suggests_followingBtn" : "suggests_followBtn"}
-                            >{item.isFollowing? 'Siguiendo' : 'Seguir'}
-                                <div />
+                                className="suggests_followBtn"
+                            >
+                                {'Seguir'}
                             </button>
                         </div>
                     ))

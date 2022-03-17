@@ -291,9 +291,39 @@
     color: #0095f6;
     background: none;
     cursor: pointer;
+    position: relative;
 }
 
 .feedPosts_usersProfileChangeBtn:active{
+    opacity: .6;
+}
+
+.feedPosts_recommendedFollowingBtn{
+    font-size: 12px;
+    line-height: 16px;
+    margin: -2px 0 -3px;
+    font-weight: 600;
+    color: #262626;
+    background: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.feedPosts_recommendedFollowingBtn:active{
+    opacity: .6;
+}
+
+.feedPost_followingRecommendedUser{
+    font-size: 12px;
+    line-height: 16px;
+    margin: -2px 0 -3px;
+    font-weight: 600;
+    color: #000000;
+    background: none;
+    cursor: pointer;
+}
+
+.feedPost_followingRecommendedUser:active{
     opacity: .6;
 }
 
@@ -324,6 +354,7 @@
     margin: -2px 0 -3px;
     font-weight: 600;
     cursor: pointer;
+    color: #262626;
 }
 
 @media (max-width: 650px){

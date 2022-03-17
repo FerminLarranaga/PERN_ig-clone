@@ -3,9 +3,12 @@ import { RequestHandler } from "express";
 
 const getRecommended: RequestHandler = async (req, res, next) => {
     const { user_id } = req.body;
+    const {limit, offset} = req.query;
+
     try {
-        const query = 'SELECT username, profile_pic, full_name, total_posts, total_followers, follower FROM users LEFT JOIN followed ON users.id = followed.following AND $1 = followed.follower WHERE users.id != $1 ORDER BY total_posts DESC, total_followers DESC';
-        const dbRes = await pool.query(query, [user_id]);
+        let query = 'SELECT username, profile_pic, full_name, total_posts, total_followers FROM users WHERE users.id NOT IN (SELECT users.id FROM followed LEFT JOIN users ON followed.following = users.id WHERE followed.follower = $1) AND users.id != $1 ORDER BY total_posts DESC, total_followers DESC LIMIT $2 OFFSET $3';
+
+        const dbRes = await pool.query(query, [user_id, limit, offset]);
 
         interface RecommendedUser {
             username: String,
@@ -19,23 +22,11 @@ const getRecommended: RequestHandler = async (req, res, next) => {
 
         const recommendedUsers: RecommendedUser[] = [...dbRes.rows];
 
-        recommendedUsers.forEach((item, index) => {
-            if (item.follower){
-                item.isFollowing = true
-            }
-
-            item.follower = ''
-
+        dbRes.rows.forEach((item, index) => {
             if (!item.profile_pic){
                 recommendedUsers.push(recommendedUsers.splice(index, 1)[0])
             }
         });
-
-        recommendedUsers.forEach((item, index) => {
-            if (item.isFollowing){
-                recommendedUsers.push(recommendedUsers.splice(index, 1)[0])
-            }
-        })
 
         res.json(recommendedUsers);
 

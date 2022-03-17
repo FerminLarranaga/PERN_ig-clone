@@ -2,6 +2,7 @@ import { Avatar, CircularProgress } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../App';
+import StopFollowing from '../../Dialogs/StopFollowing/StopFollowing';
 import OnClickPost from '../../Perfil/perfilActivity/perfilPosts/onClickPost/OnClickPost';
 import './FeedPosts.css';
 import LatestComments from './LatestComments';
@@ -14,8 +15,14 @@ const FeedPosts = () => {
     const [newComment, setNewComment] = useState('');
     const [loadingNewComment, setLoadingNewComment] = useState('');
     const [posts, setPosts] = useState([]);
+    const [recommendedUsers, setRecommendedUsers] = useState([]);
     const postsAreLoading = useRef(false);
     const [openedPostId, setOpenedPostId] = useState(false);
+    const [openStopFollowing, setOpenStopFollowing] = useState({
+        open: false,
+        username: '',
+        profile_pic: ''
+    });
     const requestedPosts = useRef(0);
     const bottomDiv = useRef();
     const memoiazedPosts = useRef([]);
@@ -25,6 +32,78 @@ const FeedPosts = () => {
     const navigate = useNavigate();
     const auth = useAuth();
     const query = useQuery();
+
+    const handleFollowing = (evt, item) => {
+        // DESABILITAR BOTON MIENTRAS CARGA Y EN EL SUGGESTS TAMBIEN
+        const { isFollowing, username, profile_pic } = item;
+
+        if (!isFollowing) {
+            const spinningDiv = document.createElement('div');
+            spinningDiv.classList.add('suggests_loadingFollowMasterContainer');
+            spinningDiv.innerHTML = "<div class='suggests_loadingFollowContainer'><div class='suggests_loadingFollow'/></div>";
+            evt.target.appendChild(spinningDiv);
+
+            fetch('/startFollowing', {
+                method: 'POST',
+                headers: {
+                    token: localStorage.token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ followedUsername: username })
+            }).then(async res => {
+                if (!res.ok) {
+                    console.error(await res.json());
+                    return
+                }
+
+                auth.setUser({ ...auth.user, total_followed: auth.user.total_followed + 1 });
+
+                item.isFollowing = true;
+                evt.target.classList.remove('feedPosts_recommendedFollowingBtn')
+                evt.target.classList.add('feedPosts_recommendedFollowingBtn')
+                evt.target.innerText = 'Siguiendo'
+            }).catch(e => console.error(e.message)).finally(() => {
+                // setLoadingFollow(false);
+            }).finally(() => {
+                evt.target.style.background = 'transparent'
+            });
+        } else {
+            setOpenStopFollowing({
+                open: true,
+                username: username,
+                profile_pic: profile_pic,
+                success: () => {
+                    item.isFollowing = false;
+                    auth.setUser({ ...auth.user, total_followed: auth.user.total_followed - 1 });
+                },
+                onloading: () => {
+                    const spinningDiv = document.createElement('div');
+                    spinningDiv.classList.add('suggests_loadingFollowMasterContainer');
+                    spinningDiv.innerHTML = "<div class='suggests_loadingFollowContainer'><div class='suggests_loadingFollow'/></div>";
+                    evt.target.appendChild(spinningDiv);
+                },
+
+                stoploading: () => {
+                    evt.target.classList.remove('feedPosts_recommendedFollowingBtn')
+                    evt.target.classList.add('feedPosts_usersProfileChangeBtn')
+                    evt.target.innerText = 'Seguir'
+                }
+            })
+        }
+    }
+
+    const getRecommendedUsers = () => {
+        fetch(`/recommended?limit=${4}&onlyNotFollowing=${true}`, {
+            method: 'GET',
+            headers: { token: localStorage.token }
+        }).then(async res => {
+            const users = await res.json();
+            console.log(users);
+            setRecommendedUsers(users);
+        }).catch(err => {
+            console.error(err);
+        });
+    }
 
     const changeCommentHandler = (evt) => {
         setNewComment(evt.target.value);
@@ -90,8 +169,8 @@ const FeedPosts = () => {
             method: 'GET',
             headers: { token: localStorage.token }
         }).then(async res => {
-            if (res.status === 404){
-                if (!memoiazedPosts.current.length){
+            if (res.status === 404) {
+                if (!memoiazedPosts.current.length) {
                     navigate('/explore/people');
                     postsAreLoading.current = false;
                     return
@@ -128,6 +207,7 @@ const FeedPosts = () => {
 
     useEffect(() => {
         getFollowingPosts();
+        getRecommendedUsers();
         bottomDivObserver.observe(bottomDiv.current);
         repositionRightContainer(rightContainerRef.current);
         window.addEventListener('resize', () => {
@@ -173,7 +253,7 @@ const FeedPosts = () => {
                             <div className='feedPost_content'>
                                 {
                                     post.file_format === 'img' ? (
-                                        <img alt='' src={post.image_url} onLoad={(evt) => {evt.target.classList.remove('feedPost_imgLoading')}} className='feedPost_imgLoading'/>
+                                        <img alt='' src={post.image_url} onLoad={(evt) => { evt.target.classList.remove('feedPost_imgLoading') }} className='feedPost_imgLoading' />
                                     ) : (
                                         <video controls autoPlay muted src={post.image_url} />
                                     )
@@ -265,13 +345,17 @@ const FeedPosts = () => {
             <div className='feedPosts_rightContainer' ref={rightContainerRef}>
                 <div className='feedPosts_usersProfileContainer'>
                     <div className='feedPosts_usersProfileInfo'>
-                        <Avatar
-                            style={{ width: 56, height: 56 }}
-                            className='feedPosts_usersProfileAvatar'
-                            src={auth.user.profile_pic}
-                        />
+                        <Link to={`/${auth.user.username}`} className='usernamePostHeader'>
+                            <Avatar
+                                style={{ width: 56, height: 56 }}
+                                className='feedPosts_usersProfileAvatar'
+                                src={auth.user.profile_pic}
+                            />
+                        </Link>
                         <div className='feedPosts_usersProfileInfoTxt'>
-                            <span className='feedPosts_usersProfileUsername'>{auth.user.username}</span>
+                            <Link to={`/${auth.user.username}`} className='usernamePostHeader'>
+                                <span className='feedPosts_usersProfileUsername'>{auth.user.username}</span>
+                            </Link>
                             <span className='feedPosts_usersProfileFullName'>{auth.user.full_name}</span>
                         </div>
                     </div>
@@ -282,63 +366,34 @@ const FeedPosts = () => {
                         <span>Sugerencias para ti</span>
                         <button onClick={() => navigate('/explore/people')}>Ver todo</button>
                     </div>
-                    <div className='feedPosts_usersProfileContainer' style={{padding: '8px 4px', margin: 0}}>
-                        <div className='feedPosts_usersProfileInfo'>
-                            <Avatar
-                                className='feedPosts_usersProfileAvatar'
-                                src=''
-                                style={{width: 32, height: 32}}
-                            />
-                            <div className='suggests_userInfoTxt'>
-                                <span className='suggests_userUsername'>Username</span>
-                                <span className='suggests_userPopular'>Popular</span>
+                    {
+                        recommendedUsers.map(user => (
+                            <div className='feedPosts_usersProfileContainer' style={{ padding: '8px 4px', margin: 0 }}>
+                                <div className='feedPosts_usersProfileInfo'>
+                                    <Link to={`/${user.username}`} className='usernamePostHeader'>
+                                        <Avatar
+                                            className='feedPosts_usersProfileAvatar'
+                                            src={user.profile_pic}
+                                            style={{ width: 32, height: 32 }}
+                                        />
+                                    </Link>
+                                    <div className='suggests_userInfoTxt'>
+                                        <Link to={`/${user.username}`} className='usernamePostHeader'>
+                                            <span className='suggests_userUsername'>{user.username}</span>
+                                        </Link>
+                                        <span className='suggests_userPopular'>Popular</span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={(evt) => { handleFollowing(evt, user) }}
+                                    className="feedPosts_usersProfileChangeBtn"
+                                >
+                                    {'Seguir'}
+                                </button>
                             </div>
-                        </div>
-                        <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button>
-                    </div>
-                    <div className='feedPosts_usersProfileContainer' style={{padding: '8px 4px', margin: 0}}>
-                        <div className='feedPosts_usersProfileInfo'>
-                            <Avatar
-                                className='feedPosts_usersProfileAvatar'
-                                src=''
-                                style={{width: 32, height: 32}}
-                            />
-                            <div className='suggests_userInfoTxt'>
-                                <span className='suggests_userUsername'>Username</span>
-                                <span className='suggests_userPopular'>Popular</span>
-                            </div>
-                        </div>
-                        <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button>
-                    </div>
-                    <div className='feedPosts_usersProfileContainer' style={{padding: '8px 4px', margin: 0}}>
-                        <div className='feedPosts_usersProfileInfo'>
-                            <Avatar
-                                className='feedPosts_usersProfileAvatar'
-                                src=''
-                                style={{width: 32, height: 32}}
-                            />
-                            <div className='suggests_userInfoTxt'>
-                                <span className='suggests_userUsername'>Username</span>
-                                <span className='suggests_userPopular'>Popular</span>
-                            </div>
-                        </div>
-                        <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button>
-                    </div>
-                    <div className='feedPosts_usersProfileContainer' style={{padding: '8px 4px', margin: 0}}>
-                        <div className='feedPosts_usersProfileInfo'>
-                            <Avatar
-                                className='feedPosts_usersProfileAvatar'
-                                src=''
-                                style={{width: 32, height: 32}}
-                            />
-                            <div className='suggests_userInfoTxt'>
-                                <span className='suggests_userUsername'>Username</span>
-                                <span className='suggests_userPopular'>Popular</span>
-                            </div>
-                        </div>
-                        <button onClick={() => { }} className="feedPosts_usersProfileChangeBtn">Seguir</button>
-                    </div>
-                    
+                        ))
+                    }
+
                 </div>
                 <div className='feedPosts_legalSection'>
 
@@ -352,6 +407,17 @@ const FeedPosts = () => {
                 postId={openedPostId}
                 postsUser={true}
             />
+            {
+                openStopFollowing.open && (
+                    <StopFollowing
+                        closeDialog={() => setOpenStopFollowing({ open: false })}
+                        startLoading={openStopFollowing.onloading}
+                        stopLoading={openStopFollowing.stoploading}
+                        postsUser={{ user: { ...openStopFollowing } }}
+                        setIsFollowing={openStopFollowing.success}
+                    />
+                )
+            }
             <div ref={bottomDiv} />
         </div>
     )
