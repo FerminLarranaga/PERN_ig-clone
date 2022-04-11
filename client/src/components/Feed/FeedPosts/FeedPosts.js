@@ -16,6 +16,7 @@ const FeedPosts = () => {
     const [loadingNewComment, setLoadingNewComment] = useState('');
     const [posts, setPosts] = useState([]);
     const [recommendedUsers, setRecommendedUsers] = useState([]);
+    const [boxesRecommendedUsers, setBoxesRecommendedUsers] = useState([]);
     const postsAreLoading = useRef(false);
     const [openedPostId, setOpenedPostId] = useState(false);
     const [openStopFollowing, setOpenStopFollowing] = useState({
@@ -33,7 +34,7 @@ const FeedPosts = () => {
     const auth = useAuth();
     const query = useQuery();
 
-    const handleFollowing = (evt, item) => {
+    const handleFollowing = (evt, item, box) => {
         // DESABILITAR BOTON MIENTRAS CARGA Y EN EL SUGGESTS TAMBIEN
         const { isFollowing, username, profile_pic } = item;
 
@@ -59,13 +60,14 @@ const FeedPosts = () => {
                 auth.setUser({ ...auth.user, total_followed: auth.user.total_followed + 1 });
 
                 item.isFollowing = true;
-                evt.target.classList.remove('feedPosts_recommendedFollowingBtn')
                 evt.target.classList.add('feedPosts_recommendedFollowingBtn')
                 evt.target.innerText = 'Siguiendo'
             }).catch(e => console.error(e.message)).finally(() => {
                 // setLoadingFollow(false);
             }).finally(() => {
-                evt.target.style.background = 'transparent'
+                if (!box) {
+                    evt.target.style.background = 'transparent'
+                }
             });
         } else {
             setOpenStopFollowing({
@@ -85,21 +87,26 @@ const FeedPosts = () => {
 
                 stoploading: () => {
                     evt.target.classList.remove('feedPosts_recommendedFollowingBtn')
-                    evt.target.classList.add('feedPosts_usersProfileChangeBtn')
+                    if (!box) {
+                        evt.target.classList.add('feedPosts_usersProfileChangeBtn')
+                    }
                     evt.target.innerText = 'Seguir'
                 }
             })
         }
     }
 
-    const getRecommendedUsers = () => {
-        fetch(`/recommended?limit=${4}&onlyNotFollowing=${true}`, {
+    const getRecommendedUsers = (limit) => {
+        fetch(`/recommended?limit=${limit}&onlyNotFollowing=${true}`, {
             method: 'GET',
             headers: { token: localStorage.token }
         }).then(async res => {
             const users = await res.json();
-            console.log(users);
-            setRecommendedUsers(users);
+            limit === 4 ? (
+                setRecommendedUsers(users)
+            ) : (
+                setBoxesRecommendedUsers(users)
+            )
         }).catch(err => {
             console.error(err);
         });
@@ -205,9 +212,42 @@ const FeedPosts = () => {
         elmnt.style = 'left: ' + (parentOffsetLeft + parentWidth - rightContainerWidth) + 'px';
     }
 
+    const dragRecommendBoxes = (evt, right) => {
+        const masterContainer = evt.target.parentNode.parentNode.parentNode.parentNode.querySelector('.feedPost_usersReccSecUsers');
+        const container = masterContainer.children[1];
+        const boxWidth = ((container.querySelector('.feedPost_usersReccSecUser')).clientWidth) + 25/2;
+        const scrollable = (container.clientWidth - masterContainer.clientWidth) + 24 * 2;
+        const scrolled = masterContainer.scrollLeft;
+
+        const toScroll = Math.min((scrollable), (scrolled + (boxWidth*2)*right));
+        masterContainer.scroll({left: toScroll, behavior: 'smooth'});
+    }
+
+    const fixDraggingArrowReccBoxes = (evt) => {
+        const masterContainer = evt.target;
+        const leftArrow = masterContainer.firstChild;
+        const rightArrow = masterContainer.lastChild;
+        const boxesContainer = masterContainer.children[1];
+
+        const scrollable = (boxesContainer.clientWidth - masterContainer.clientWidth) + 24 * 2;
+        const scrolled = masterContainer.scrollLeft;
+
+        if (scrollable === Math.trunc(scrolled)){
+            rightArrow.style.display = 'none';
+            leftArrow.style.display = 'block';
+        } else if (scrolled === 0){
+            leftArrow.style.display = 'none';
+            rightArrow.style.display = 'block';
+        } else {
+            leftArrow.style.display = 'block';
+            rightArrow.style.display = 'block';
+        }
+    }
+
     useEffect(() => {
         getFollowingPosts();
-        getRecommendedUsers();
+        getRecommendedUsers(4);
+        getRecommendedUsers(15);
         bottomDivObserver.observe(bottomDiv.current);
         repositionRightContainer(rightContainerRef.current);
         window.addEventListener('resize', () => {
@@ -341,6 +381,56 @@ const FeedPosts = () => {
                         </div>
                     ))
                 }
+
+                <div className='feedPost_usersReccSec'>
+                    <div className='feedPost_usersReccSecHeader'>
+                        <div className='feedPost_usersReccTitle'>Sugerencias para ti</div>
+                        <Link to='explore/people'>
+                            <div className='feedPost_usersReccPlus'>Ver Todo</div>
+                        </Link>
+                    </div>
+                    <div className='feedPost_usersReccSecUsers' onScroll={fixDraggingArrowReccBoxes}>
+                        <div className='feedPost_usersReccSecUsersArrow_left' onClick={(evt) => dragRecommendBoxes(evt, -1)}>
+                            <svg viewBox='0 0 24 24'>
+                                <path d="M14.71 15.88 10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div className='feedPost_usersReccSecUserContainer'>
+                            {
+                                boxesRecommendedUsers.map((user) => (
+                                    <div className='feedPost_usersReccSecUser'>
+                                        <Avatar
+                                            src={user.profile_pic}
+                                            style={{ width: 54, height: 54 }}
+                                            className='feedPost_usersReccSecUserAvatar'
+                                        />
+                                        <div className='feedPost_usersReccSecUserInfo'>
+                                            <div className='feedPost_usersReccSecUserUsername'>
+                                                {user.full_name}
+                                            </div>
+                                            <div className='feedPost_usersReccSecUserSuggestionTxt'>
+                                                <span>{'Sugerencia para ti'}</span>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={(evt) => { handleFollowing(evt, user, true) }}
+                                            className="suggests_followBtn"
+                                        >
+                                            {'Seguir'}
+                                        </button>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                        <div className='feedPost_usersReccSecUsersArrow_right' onClick={(evt) => dragRecommendBoxes(evt, 1)}>
+                            <svg viewBox='0 0 24 24'>
+                                <path d="M14.71 15.88 10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className='feedPosts_rightContainer' ref={rightContainerRef}>
                 <div className='feedPosts_usersProfileContainer'>
@@ -393,10 +483,6 @@ const FeedPosts = () => {
                             </div>
                         ))
                     }
-
-                </div>
-                <div className='feedPosts_legalSection'>
-
                 </div>
             </div>
             <OnClickPost

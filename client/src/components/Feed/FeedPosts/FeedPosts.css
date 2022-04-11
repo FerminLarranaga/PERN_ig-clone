@@ -357,6 +357,101 @@
     color: #262626;
 }
 
+.feedPost_usersReccSec{
+    width: 100%;
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    padding: 20px 0;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.feedPost_usersReccSecHeader{
+    margin: 0 24px 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.feedPost_usersReccSecHeader > a{
+    text-decoration: none;
+}
+
+.feedPost_usersReccTitle{
+    color: #8e8e8e;
+    font-weight: 600;
+    line-height: 18px;
+    font-size: 14px;
+}
+
+.feedPost_usersReccPlus{
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    color: #0095f6;
+    text-decoration: none;
+    outline: none;
+}
+
+.feedPost_usersReccPlus:active{
+    opacity: .6;
+}
+
+.feedPost_usersReccSecUsers{
+    width: 100%;
+    padding: 0 24px;
+    overflow-x: scroll;
+}
+
+.feedPost_usersReccSecUsers::-webkit-scrollbar{
+    width: 0;
+    background: transparent;
+}
+
+.feedPost_usersReccSecUser{
+    padding: 20px;
+    width: 175px;
+    height: 216px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+}
+
+.feedPost_usersReccSecUserAvatar{
+    margin-bottom: 20px;
+}
+
+.feedPost_usersReccSecUserInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: auto;
+    max-width: 100%;
+}
+
+.feedPost_usersReccSecUserUsername{
+    color: #262626;
+    font-size: 14px;
+    line-height: 18px;
+    max-width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.feedPost_usersReccSecUserSuggestionTxt{
+    font-size: 14px;
+    line-height: 18px;
+    color: #8e8e8e;
+    font-weight: 400;
+
+}
+
 @media (max-width: 650px){
     .feedPosts_container{
         width: 100%;
@@ -366,4 +461,37 @@
         border: none;
         border-radius: 0px;
     }
+}
+
+.feedPost_usersReccSecUsersArrow_left{
+    width: 25px;
+    fill: rgb(255, 255, 255);
+    background: rgb(75, 75, 75);
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: 30px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.feedPost_usersReccSecUsersArrow_right{
+    width: 25px;
+    fill: rgb(255, 255, 255);
+    background: rgb(75, 75, 75);
+    height: 25px;
+    border-radius: 50%;
+    position: absolute;
+    top: calc(50% - 20px);
+    right: 30px;
+    transform: rotate(180deg);
+    cursor: pointer;
+    z-index: 3;
+}
+
+.feedPost_usersReccSecUserContainer{
+    width: fit-content;
+    display: flex;
+    gap: 25px;
 }
