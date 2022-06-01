@@ -2,13 +2,13 @@ import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
 
 const firebaseApp = initializeApp({
-    apiKey: "AIzaSyCLnCkzSnQwc2Du8sQt9qz83jzL84ui2Mk",
-    authDomain: "instagramm--clone.firebaseapp.com",
-    projectId: "instagramm--clone",
-    storageBucket: "instagramm--clone.appspot.com",
-    messagingSenderId: "784155355097",
-    appId: "1:784155355097:web:524ac4380c1d1246c11bc8",
-    measurementId: "G-DYH75MVMMB"
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APPID,
+    measurementId: process.env.REACT_APP_MEASURMENT_ID
 });
 
 const storage = getStorage(firebaseApp);
